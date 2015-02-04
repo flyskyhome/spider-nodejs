@@ -1,0 +1,85 @@
+
+@loginHeight :@baseLineHeight/2;    //10px
+@loginLineHeight:@baseLineHeight*3 + 6; //66px
+/*
+body {
+  line-height: @baseLineHeight - 6;//14px
+}
+*/
+
+.login_t(){
+    background-color: @devGrayDarker;
+    float: left;
+    height: @loginLineHeight; //66px
+}
+
+.div_login_t_l
+{
+    .login_t;    
+
+    background-image: url(../../../Resources/Image/t_l.gif);
+    background-position: left top;
+    background-repeat: no-repeat;
+    width: @loginHeight ; //10px
+}
+
+.div_login_t_c
+{
+    .login_t;
+
+    width: @baseLineHeight*11+4;  //224px
+    text-align: left;
+    line-height: @loginLineHeight;
+}
+
+.div_login_t_r
+{
+    .login_t; 
+
+    background-image: url(../../../Resources/Image/t_r.gif);
+    background-position: right top;
+    background-repeat: no-repeat;
+    width: @loginLineHeight;
+}
+
+.div_login_b_l
+{
+    background-image: url(../../../Resources/Image/m_b_l.gif);
+    background-position: left top;
+    background-repeat: no-repeat;
+    float: left;
+    height: @loginHeight ;
+    width: @loginHeight ;
+}
+
+.div_login_b_c
+{
+    float: left;
+    width: 280px;
+    height: @loginHeight ;
+    font-size: 8px;
+    border-style: none none solid;
+    border-color: #cdcdcd;
+    border-width: 1px;
+}
+
+.div_login_b_r
+{
+    background-image: url(../../../Resources/Image/m_b_r.gif);
+    background-position: right top;
+    background-repeat: no-repeat;
+    float: left;
+    width: @loginHeight ;
+    height: @loginHeight ;
+}
+
+.div_login_tab
+{
+    border-style: solid solid none;
+    border-color: #cdcdcd;
+    border-width: 1px;
+    padding-left: @loginHeight ;
+    padding-right: @loginHeight ;
+}
+
+.logoBar{background: url('../../../Resources/Images/top_bg.jpg' ) repeat-x center center;}

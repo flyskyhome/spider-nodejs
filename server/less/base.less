@@ -1,0 +1,378 @@
+@charset "utf-8";
+// 文字排版部分
+
+/*
+ * @desc 字体大小定义函数
+ * @param {number} fontsize :字体大小,单位px
+ * @param {object} unit :单位 ,px,%,pd,em……
+ */
+.font-size(@fontsize:@baseFontSize,@unit,@unit:px) when not(@unit='%'){  
+  .f@{fontsize} {font-size:unit(@fontsize,@unit);}
+}
+
+.font-size(@fontsize:@baseFontSize,@unit:px) when (@unit='%'){
+  .f_@{fontsize} {font-size:percentage(@fontsize/100);}  
+}
+/*
+ *  @desc 字体大小样式递归生成函数
+ *  @param {number} start :开始
+ *  @param {number} end   :结束
+ *  @param {number} step  :步长
+ */
+.fX(@start,@end,@step,@unit:px) when (isnumber(@start)) and (isnumber(@end)) and (@start<=@end){
+  .font-size(@start,@unit);
+  .fX(@start+@step,@end,@step,@unit);
+}
+
+// 生成需要的字体尺寸样式
+.fX(12,14,1);
+.fX(16,20,4);
+
+.fb{font-weight:bold}
+.fn{font-weight:normal;}
+
+.t2{text-indent:2em;}
+.unl{text-decoration:underline;}
+.no_unl{text-decoration:none;}
+
+/*
+ * @desc 行高定义函数
+ * @param {number} lineheight :字体大小,单位px
+ * @param {object} unit :单位 ,px,%,pd,em……
+ */
+.line-height(@lineheight:@baseLineHeight,@unit:px) when(@unit='%'){
+  .lh_@{lineheight} { line-height:percentage(@lineheight/100);}
+}
+
+.line-height(@lineheight:@baseLineHeight,@unit:px) when not (@unit='%'){  
+  .lh_@{lineheight} {line-height: unit(@lineheight,@unit);}
+}
+
+.lhX(@start,@end,@step,@unit:px) when (isnumber(@start)) and (isnumber(@end)) and (@start<=@end){
+  .line-height(@start,@unit);
+  .lhX(@start+@step,@end,@step,@unit);
+}
+
+.lhX(150,180,30,'%');
+.lhX(200,200,10,'%');
+
+// 定位部分
+.tl{text-align:left;}
+.tc{text-align:center;}
+.tr{text-align:right;}
+
+.bc{margin-left:0;margin-right:0;}
+.fl{float:left;display:inline;}
+.fr{float:right;display:inline;}
+.cb{clear:both;}
+.cl{clear:left;}
+.cr{clear:right;}
+
+.vm{vertical-align:middle;}
+.pr{position:relative;}
+.pa{position:absolute;}
+.abs-right{position:absolute;right:0}
+.zoom{zoom:1;}
+.hidden{visibility:hidden;}
+.none{display:none;}
+
+/*长度高度*/
+
+/*
+ * @desc 宽度定义函数
+ * @default 10px
+ */
+.width(@width:10,@unit:px) when not (@unit='%'){  
+  .w@{width} {width:unit(@width,@unit);}  
+}
+
+.width(@width:10,@unit:px) when (@unit='%'){
+  .w_@{width} {width:percentage(@width/100);}
+}
+/*
+ *  @desc 宽度样式递归生成函数
+ *  @param {number} end   :结束
+ *  @param {number} step  :步长
+ */
+.wX(@start,@end,@step,@unit:px) when (isnumber(@start)) and (isnumber(@end)) and (@start<=@end){
+  .width(@start,@unit);
+  .wX(@start+@step,@end,@step,@unit);
+}
+
+// 定义固定宽度
+.wX(10,100,10);
+.wX(120,150,30);
+.wX(200,800,100);
+
+// 定义百分比宽度
+.wX(98,100,1,'%');
+
+/*
+ * @desc 高度定义函数
+ * @default 10px
+ */
+.height(@height:10,@unit:px) when not (@unit='%'){  
+  .h@{height} {height:unit(@height,@unit);}
+}
+
+.height(@height:10,@unit:px) when (@unit='%'){  
+  .h_@{height} {height:percentage(@height/100);}
+}
+/*
+ *  @desc 高度样式递归生成函数
+ *  @param {number} end   :结束
+ *  @param {number} step  :步长
+ */
+.hX(@start,@end,@step,@unit:px) when (isnumber(@start)) and (isnumber(@end)) and (@start<=@end){
+  .height(@start,@unit);
+  .hX(@start+@step,@end,@step,@unit);
+}
+
+.hX(50,80,30);
+.hX(100,300,50);
+.hX(98,100,1,'%');
+
+/*边距*/
+ /*
+ *  @desc 外边距非百分比分支处理
+ */
+.mPx(@width,@pre:'') when(@pre=''){
+  .m@{width} {margin:unit(@width,@unit)};
+}
+
+.mPx(@width,@pre:'') when (@pre=t){
+  .m@{pre}@{width} {margin-top:unit(@width,@unit);}
+}
+
+.mPx(@width,@pre:'') when (@pre=b){
+  .m@{pre}@{width} {margin-bottom:unit(@width,@unit);}
+}
+
+.mPx(@width,@pre:'') when (@pre=l){
+  .m@{pre}@{width} {margin-left:unit(@width,@unit);}
+}
+
+.mPx(@width,@pre:'') when (@pre=r){
+  .m@{pre}@{width} {margin-right:unit(@width,@unit);}
+}
+
+/*
+ *  @desc 外边距百分比分支处理
+ */
+.mPer(@width,@pre) when(@pre=''){
+  .m_@{width} {margin:percentage(@width/100);};
+}
+
+.mPer(@width,@pre:'') when (@pre=t){
+  .m@{pre}_@{width} {margin-top:percentage(@width/100);}
+}
+
+.mPer(@width,@pre:'') when (@pre=b){
+  .m@{pre}_@{width} {margin-bottom:percentage(@width/100);}
+}
+
+.mPer(@width,@pre:'') when (@pre=l){
+  .m@{pre}_@{width} {margin-left:percentage(@width/100);}
+}
+
+.mPer(@width,@pre:'') when (@pre=r){
+  .m@{pre}_@{width} {margin-right:percentage(@width/100);}
+}
+
+/*
+ *  @desc 外边距根据不同的单位走不同的分支,非百分比分支
+ */
+.mUnit(@width:10,@pre:'',@unit:px) when not (@unit='%'){
+  .mPx(@width,@pre);
+}
+
+/*
+ *  @desc 外边距根据不同的单位走不同的分支,百分比分支
+ */
+.mUnit(@width:10,@pre:'',@unit:px) when (@unit='%'){
+  .mPer(@width,@pre);
+}
+
+/*
+ *  @desc 外边距样式递归生成函数
+ *  @param {number} start   :结束
+ *  @param {number} end     :结束
+ *  @param {number} step    :步长
+ *  @param {number} pre   :前缀
+ *  @param {number} unit    :单位
+ */
+.mX(@start,@end,@step,@pre:'',@unit:px) when (isnumber(@start)) and (isnumber(@end)) and (@start<=@end){
+  .mUnit(@start,@pre,@unit);
+  //递归回调
+  .mX(@start+@step,@end,@step,@pre,@unit);
+}
+
+.mX(10,15,5);
+.mX(30,30,5);
+
+.mX(5,20,5,t);
+.mX(30,30,5,t);
+.mX(50,100,50,t);
+
+.mX(5,20,5,b);
+.mX(30,30,5,b);
+.mX(50,100,50,b);
+
+.mX(5,20,5,l);
+.mX(30,30,5,l);
+.mX(50,100,50,l);
+
+.mX(5,20,5,r);
+.mX(30,30,5,r);
+.mX(50,100,50,r);
+
+
+ /*
+ *  @desc 内边距非百分比分支处理
+ */
+.pPx(@width,@pre:'') when(@pre=''){
+  .p@{width} {padding:unit(@width,@unit)};
+}
+
+.pPx(@width,@pre:'') when (@pre=t){
+  .p@{pre}@{width} {padding-top:unit(@width,@unit);}
+}
+
+.pPx(@width,@pre:'') when (@pre=b){
+  .p@{pre}@{width} {padding-bottom:unit(@width,@unit);}
+}
+
+.pPx(@width,@pre:'') when (@pre=l){
+  .p@{pre}@{width} {padding-left:unit(@width,@unit);}
+}
+
+.pPx(@width,@pre:'') when (@pre=r){
+  .p@{pre}@{width} {padding-right:unit(@width,@unit);}
+}
+
+/*
+ *  @desc 内边距百分比分支处理
+ */
+.pPer(@width,@pre) when(@pre=''){  
+ .p_@{width} {padding:percentage(@width/100);}
+}
+
+.pPer(@width,@pre:'') when (@pre=t){
+  .p@{pre}_@{width} {padding-top:percentage(@width/100);}
+}
+
+.pPer(@width,@pre:'') when (@pre=b){
+  .p@{pre}_@{width} {padding-bottom:percentage(@width/100);}
+}
+
+.pPer(@width,@pre:'') when (@pre=l){
+  .p@{pre}_@{width} {padding-left:percentage(@width/100);}
+}
+
+.pPer(@width,@pre:'') when (@pre=r){
+  .p@{pre}_@{width} {padding-right:percentage(@width/100);}
+}
+
+/*
+ *  @desc 内边距根据不同的单位走不同的分支,非百分比分支
+ */
+.pUnit(@width:10,@pre:'',@unit:px) when not (@unit='%'){
+  .pPx(@width,@pre);
+}
+
+/*
+ *  @desc 内边距根据不同的单位走不同的分支,百分比分支
+ */
+.pUnit(@width:10,@pre:'',@unit:px) when (@unit='%'){
+  .pPer(@width,@pre);
+}
+
+/*
+ *  @desc 内边距样式递归生成函数
+ *  @param {number} start   :结束
+ *  @param {number} end     :结束
+ *  @param {number} step    :步长
+ *  @param {number} pre   :前缀
+ *  @param {number} unit    :单位
+ */
+.pX(@start,@end,@step,@pre:'',@unit:px) when (isnumber(@start)) and (isnumber(@end)) and (@start<=@end){
+  .pUnit(@start,@pre,@unit);
+  //递归回调
+  .pX(@start+@step,@end,@step,@pre,@unit);
+}
+
+.pX(0,15,5);
+.pX(30,30,5);
+
+.pX(5,20,5,t);
+.pX(30,30,5,t);
+.pX(50,100,50,t);
+
+.pX(5,20,5,b);
+.pX(30,30,5,b);
+.pX(50,100,50,b);
+
+.pX(5,20,5,l);
+.pX(30,30,5,l);
+.pX(50,100,50,l);
+
+.pX(5,20,5,r);
+.pX(30,30,5,r);
+.pX(50,100,50,r);
+
+/*居中*/
+/*水平居中*/
+// 文本、图片、表内文字
+.sp_center{text-align:center;width:100%}
+// 块级元素
+.sp_center_div{margin: 0 auto}
+
+/*
+.sp_div{text-align:center}
+.sp_div div{margin:0 auto;width:200px;height:30px;border:1px solid #ccc;}
+.sp_table{text-align:center}
+.sp_table table{margin:0 auto;border:1px}
+
+ // 简单文本垂直居中 
+.cz_text{border:1px solid #ccc;height:100px;line-height:100px;vertical-align:middle}
+ // 图片居中 
+.cz_img{width:500px;height:300px;border:1px solid #ccc;overflow:hidden;position:relative;display:table-cell;text-align:center;vertical-align:middle}
+.cz_img div{position:static;+position:absolute; top:50%}
+img {top:-50%;left:-50%;width:276px;height:110px}
+// div和表格垂直居中
+.p_cz_div {display: table;border: 1px solid #ccc;width: 760px;height: 400px;*position: relative;overflow: hidden;}  
+.cz_div,.cz_table {vertical-align: middle;display: table-cell;*position: absolute;*top: 50%;} 
+.cz_div div,.cz_table table {*position: relative; *top: -50%;border:1px solid #ccc}
+*/
+/*杂项*/
+.error{color: #f00;border: 1px solid #ccc;padding: 10px;text-align:center;margin:10px}
+.bd1{border:1px solid #ccc}
+
+.wd180{width:180px}
+.wd182{width:182px}
+.wd184{width:184px}
+.wd450{width:450px}
+.wd130{width:130px}
+.hg22{height:22px}
+.hg18{height:18px}
+.hg20{height:20px}
+.pd1_15{padding:3px 15px;padding:4px 15px\9;*padding:3px 15px 1px }
+
+table{ border-collapse: collapse;empty-cells:show;}
+.btnClass{border: solid 1px #7f7f7f;background: #e0dfdf url('../DXR.axd?r=2_4-hZqm4') top;cursor: pointer}
+.im{line-height:18px;vertical-align:middle}
+.oa{overflow:auto}
+.oxa{overflow-x:auto}
+.oya{overflow-y:auto}
+.oxn{overflow-x:hidden}
+.oyn{overflow-y:hidden}
+.on{overflow:hidden}
+
+.cp{cursor: pointer}
+.cd{cursor: default}
+
+.ellipsis {
+  overflow: hidden; 
+  white-space: nowrap; 
+  text-overflow: ellipsis;
+}

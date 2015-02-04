@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>
+      采集配置
+    </title>
+    <meta name='viewport' content='width=device-width,initial-scale=1.0'>
+    <!-- Bootstrap Css-->
+    <link href='./stylesheets/bootstrap.css' rel='stylesheet'>
+    <link href="./stylesheets/bootstrap-responsive.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <a class="brand" href="#">信息采集配置</a>
+          </div>
+        </div>
+      </div>
+      <div class="row-fluid">
+        <div class="span12">
+          <!-- 标签部分 -->
+          <div class="tabbable ml10 mr10">
+            <!-- Only required for left/right tabs -->
+            <ul class="nav nav-tabs" id="infoTab1">
+              <li class="active">
+                <a href="#src1" data-toggle="tab">网站信息</a>
+              </li>
+              <li>
+                <a href="#html1" data-toggle="tab">信息查询</a>
+              </li>
+              <li>
+                <a href="#carInfo" data-toggle="tab">摇号信息</a>
+              </li>
+              <li>
+                <a href="#loginfo" data-toggle="tab">日志信息</a>
+              </li>
+              <li>
+                <a href="#pageinfo" data-toggle="tab">采集页面信息</a>
+              </li>
+            </ul>
+            <div class="tab-content ">
+              <div class="tab-pane active p5 bd1 tc" id="src1" style="border-top:0;">
+              	<select id="selSrcType" placeholder="来源类型" class="input-medium" style="height:23px"></select>
+              	<select id="selSiteName" placeholder="网站名称" class="input-medium" style="height:23px"></select>
+              	<input id="inpUrl" type="text" placeholder="网址" class="input-xlarge">
+				<input id="inpRemark" type="text" placeholder="备注说明" class="input-medium">
+              	<a id="btnAdd" class="btn btn-small w100">添加</a>
+              	<a id="btnDo" class="btn btn-small w100">批量采集</a>
+              	<a id="btnSetKey" class="btn btn-small w100">设置关键字</a>
+              	<a id="btnSave" class="btn btn-small w100">保存列表</a>
+				<table id="tbResult" class="table table-bordered mt10">
+	              <thead>
+	                <tr>
+	                  <th><input id="cbAll" type="checkbox"></th>
+	                  <th>序号</th>
+	                  <th>来源</th>
+	                  <th>待采集网址</th>
+	                  <th>备注说明</th>
+	                  <th>操作</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	              </tbody>
+	            </table>
+              </div>
+              <div class="tab-pane p5 bd1 tc" id="html1" style="border-top:0">
+				<input id="inpTitle" type="text" placeholder="标题" class="input-medium">
+				<input id="inpAuthor" type="text" placeholder="作者" class="input-medium">
+				<input id="inpSrc" type="text" placeholder="来源" class="input-medium">
+				<input id="dpBegin" type="text" placeholder="开始日期" class="input-medium">
+				<input id="dpEnd" type="text" placeholder="结束日期" class="input-medium">
+              	<a id="btnSearch" class="btn btn-small w100">查询</a>
+				<table id="tbSearchResult" class="table table-bordered mt10">
+	              <thead>
+	                <tr>
+	                  <th>序号</th>
+	                  <th>标题</th>
+	                  <th>作者</th>
+	                  <th>日期</th>
+	                  <th>来源</th>
+	                  <th>采集源</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	              </tbody>
+	            </table>
+              </div>
+              <div class="tab-pane p5 bd1 tc" id="carInfo" style="border-top:0">
+				<input id="inpSn" type="text" placeholder="申请编号" class="input-medium">
+				<input id="inpName" type="text" placeholder="名字" class="input-medium">
+              	<a id="btnCar" class="btn btn-small w100">查询</a>
+				<table id="tbCarInfo" class="table table-bordered mt10">
+	              <thead>
+	                <tr>
+	                  <th>序号</th>
+	                  <th>申请编号</th>
+	                  <th>名字</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	              </tbody>
+	            </table>
+              </div>
+              <div class="tab-pane p5 bd1" id="loginfo" style="border-top:0">
+              	<a id="btnClearLog" class="btn btn-small w100">清除日志</a>
+              	<a id="btnTmpInfo" class="btn btn-small w100">临时信息采集</a>
+				<table id="tbGrapResult" class="table table-bordered mt10">
+	              <thead>
+	                <tr>
+	                  <th>类型</th>
+	                  <th>url</th>
+	                  <th>出错原因</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	              </tbody>
+	            </table>
+	            <div id="messages"></div>
+              </div>
+              <div class="tab-pane p5 bd1" id="pageinfo" style="border-top:0">
+				<iframe src=""></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+	<div id="htmlModal" class="modal hide" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icon-fullscreen"></i></button></div>
+		<div class="modal-body"></div>
+	</div>
+    <script src='javascripts/js_lib/jquery-1.8.3.js'></script>
+    <script src='javascripts/js_lib/jquery.json-2.3.min.js'></script>
+    <script src='javascripts/js/bootstrap.js'></script>
+    <script src='javascripts/js/bootstrap-navbar.js'></script>
+    <script src='javascripts/js/bootstrap-datepicker.js'></script>
+    <script src='javascripts/base.js'></script>
+    <script src='javascripts/data.js'></script>
+    <script src='javascripts/key.js'></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      (function(win,$){
+	      var pageObj={
+	      	dataStore:{
+	      		searchResult:[]
+	      	},
+	      	init:function(){
+		        this.initSocket();
+		        this.initData();
+		        this.bindEvent();
+	      	},
+	      	initSocket:function(){
+	      		var that=this;
+		        this.socket = io.connect('/');
+				this.socket.on('message', function(data) {
+					data = JSON.parse(data);
+					$('#messages').append('<div class="' + data.type + '">' + data.message +
+						'</div>');
+				});
+				this.socket.on('search', function(res) {
+					switch(res.type){
+						case "msg":
+							$('#messages').append('<div class="' + res.type + '">' + res.message +'</div>');
+							break;
+						case "res":
+							//如果正常获取
+							if(res.state=="ok"){
+								var dataInfo=res.objList;
+						    	var iCount=dataInfo.length,
+						    		tbodyDom=$("#tbSearchResult tbody"),
+						    		rec={},
+						    		sTrInfo="",
+						    		sHtml="";
+
+						    	that.dataStore.searchResult=dataInfo;
+
+						    	for(var i=0;i<iCount;i++){
+						    		rec=dataInfo[i];
+						    		sTrInfo="<tr><td>"+(i-0+1)+"</td><td class='tl'>"+rec._id+"</td><td class='tl'>"+rec.author+"</td><td>"+rec.datetime+"</td><td>"+rec.src+"</td><td>"+rec.orgSrc+"</td></tr>";
+						    		sHtml+=sTrInfo;
+						    	}
+						    	tbodyDom.html(sHtml);
+							}
+							else{
+								alert(res.message);
+							}
+							break;
+						default:
+							break;
+					}
+				});
+
+				this.socket.on('config',function(res){
+					switch(res.type){
+						case "msg":
+							if(res.state=="ok"){
+								alert("保存成功!");
+							}
+							else{
+								alert(res.message);
+							}
+
+							break;
+						case "res":
+							if(res.state=="ok"){
+								showConfigList(res.objList);
+							}
+							else{
+								alert(res.message);
+							}
+							break;
+					}
+
+					function showConfigList(objList){
+						var tbodyDom=$("#tbResult tbody"),
+				    		sHtml="",
+				    		sTrInfo="",
+				    		obj,
+				    		sSiteName="",
+				    		sUrl="",
+				    		sRemark="";
+
+				    	var iCount=objList.length;
+				    	for(var i=0;i<iCount;i++){
+				    		obj=objList[i];
+				    		sSiteName=obj.src;
+				    		sUrl=obj.url;
+				    		sRemark=obj.remark;
+				        		sTrInfo+="<tr><td><input type='checkbox'></td>"+"<td>"+(i-0+1)+"</td><td>"+sSiteName+"</td><td>"+sUrl+"</td><td>"+sRemark+"</td><td><a href='#' class='btn btn-small btn-info'>配置</a><a href='#' class='btn btn-small btn-warning'>采集</a><a href='#' class='btn btn-small btn-danger'>删除</a>"+"</td></tr>";
+				    	}
+				        tbodyDom.html(sTrInfo);
+					}
+				});
+
+				this.socket.on('grap',function(res){
+					switch(res.type){
+						case "msg":
+							$('#messages').append('<div class="' + res.type + '">' + res.message +'</div>');
+							break;
+						case "res":
+							var list_errList=res.infoObj.list_errList,
+								iCount=list_errList.length,
+								sHtml="";
+							
+							for(var i=0;i<iCount;i++){
+								sHtml+="<tr><td>"+list_errList[i].type+"</td><td>"+list_errList[i].url+"</td><td>"+list_errList[i].reseaon+"</td></tr>";
+							}
+							$("#tbGrapResult tbody").html(sHtml);
+							break;
+					}
+				});
+
+				this.socket.on('key',function(res){
+					switch(res.type){
+						case "msg":
+							$('#messages').append('<div class="' + res.type + '">' + res.message +'</div>');
+							break;
+					}
+				});
+
+				this.socket.on('car', function(res) {
+					switch(res.type){
+						case "msg":
+							$('#messages').append('<div class="' + res.type + '">' + res.message +'</div>');
+							break;
+						case "res":
+							//如果正常获取
+							if(res.state=="ok"){
+								var dataInfo=res.objList;
+						    	var iCount=dataInfo.length,
+						    		tbodyDom=$("#tbCarInfo tbody"),
+						    		rec={},
+						    		sTrInfo="",
+						    		sHtml="";
+
+						    	that.dataStore.searchResult=dataInfo;
+
+						    	for(var i=0;i<iCount;i++){
+						    		rec=dataInfo[i];
+						    		sTrInfo="<tr><td>"+(i-0+1)+"</td><td class='tl'>"+rec._id+"</td><td class='tl'>"+rec.name+"</td></tr>";
+						    		sHtml+=sTrInfo;
+						    	}
+						    	tbodyDom.html(sHtml);
+							}
+							else{
+								alert(res.message);
+							}
+							break;
+						default:
+							break;
+					}
+				});
+
+				this.socket.on('iframe', function(data) {
+					that.dataStore.urlList=data.urlList;
+					var urlObj=that.dataStore.urlList[0];
+					$('#messages').append('<div class="' + data.type + '">' + urlObj.url +'</div>');
+					$("iframe").attr("src",urlObj.url);
+				});
+	      	},
+	      	initData:function(){
+	      		var domObj=$("#selSrcType"),
+	      			sHtml="",
+	      			firstKey="";
+	      		for(var key in dataSrc){
+	      			if(!firstKey){
+	      				firstKey=key;
+	      			}
+	      			sHtml+="<option value='"+key+"'>"+key+"</option>";
+	      		}
+	      		domObj.html(sHtml);
+
+	      		//$("#dpBegin").datepicker("create");
+	      		//$("#dpEnd").datepicker("create");
+	      		//
+	      		this.getConfig();
+	      	},
+	      	bindEvent:function(){
+	      		var that=this;
+	      		//绑定设置关键字按钮
+	      		$("#btnSetKey").click(function(e){
+	      			that.setKey();
+	      		});
+	      		//绑定新增按钮事件
+		        $("#btnAdd").click(function(e){
+		        	var resBody=$("#tbResult tbody"),
+		        		recList=$("#tbResult tbody tr"),
+		        		iCount=recList.length,
+		        		sSrcType= $("#selSrcType").val(),
+		        		sSiteCode=$("#selSiteName").val(),
+		        		sRemark=$("#inpRemark").val(),
+		        		sUrl=$("#inpUrl").val(),
+		        		sTrInfo="";
+
+		        	if(!sUrl){
+		        		alert("请添加网址!");
+		        		return;
+		        	}
+		        	if(sUrl.indexOf(sSiteCode)<0){
+		        		alert("该网址不属于该网站，不能添加!");
+		        		return;
+		        	}
+		        	sSiteName=dataSrc[sSrcType][sSiteCode];
+
+		        	sTrInfo="<tr><td><input type='checkbox'></td>"+"<td>"+(iCount-0+1)+"</td><td>"+sSiteName+"</td><td>"+sUrl+"</td><td>"+sRemark+"</td><td><a href='#' class='btn btn-small btn-info'>配置</a><a href='#' class='btn btn-small btn-warning'>采集</a><a href='#' class='btn btn-small btn-danger'>删除</a>"+"</td></tr>";
+
+		        	resBody.append(sTrInfo);
+		        });
+
+		        //绑定数据来源类型切换事件
+		        $("#selSrcType").change(function(e){
+		        	var domObj=$("#selSiteName"),
+		        		sValue=$("#selSrcType").val(),
+		        		dataInfo=dataSrc[sValue],
+		        		sHtml="";
+			        for(var key in dataInfo){
+		      			sHtml+="<option value='"+key+"'>"+dataInfo[key]+"</option>";
+		      		}
+		      		domObj.html(sHtml);
+		        }).trigger("change");
+
+		        //绑定网站切换事件
+		        $("#selSiteName").change(function(e){
+		        	var sValue=$("#selSiteName").val();
+		        	$("#selSiteName").attr("title",sValue);
+		        }).trigger("change");
+
+		        //操作动作绑定到tbody上
+		        $("#tbResult tbody").click(function(e){
+		        	var target=e.target,
+		        		jdom=$(target);
+
+		        	if(jdom.hasClass("btn")){
+		        		if(jdom.hasClass("btn-info")){
+		        			alert("编辑");
+		        		}
+		        		else if(jdom.hasClass("btn-danger")){
+							jdom.parent().parent().remove();
+		        		}
+		        		else if($(target).hasClass("btn-warning")){
+		        			var urlList=[],
+		        				tdDom=jdom.parent(),
+		        				//网址
+		        				sUrl=tdDom.prev().prev().text(),
+		        				//备注
+		        				sRemark=tdDom.prev().text(),
+		        				//来源
+		        				sSrc=tdDom.prev().prev().prev().text(),
+		        				urlObj={
+		        					url:sUrl,
+		        					src:sSrc,
+		        					remark:sRemark
+		        				};
+
+		        			urlList.push(urlObj);
+							that.grap(urlList);
+		        		}
+		        	}
+		        });
+		       	//绑定批量采集按钮
+		        $("#btnDo").click(function(e){
+		        	var urlList=[],
+		        		chkList=$("#tbResult tbody tr [type='checkbox']"),
+		        		iCount=chkList.length,
+		        		chkDom,
+		        		jdom,
+		        		tdDom,
+		        		sUrl="",
+		        		sRemark="",
+		        		sSrc="";
+
+		        	for(var i=0;i<iCount;i++){
+		        		chkDom=chkList[i];
+		        		jdom=$(chkDom);
+		        		tdDom=jdom.parent();
+		        		if(chkDom.checked){
+		        			//网址
+		        			sUrl=tdDom.next().next().next().text();
+		        			//备注
+		        			sRemark=tdDom.next().next().next().next().text();
+		        			//来源
+		        			sSrc=tdDom.next().next().text();
+		        			var urlObj={
+		        				url:sUrl,
+		        				src:sSrc,
+		        				remark:sRemark
+		        			};
+		        			urlList.push(urlObj);
+		        		}
+		        	}
+
+					that.grap(urlList);
+		        });
+
+		        //全选按钮
+		        $("#cbAll").click(function(e){
+		        	var chkList=$("#tbResult tbody tr [type='checkbox']"),
+		        		iCount=chkList.length;
+		        	for(var i=0;i<iCount;i++){
+		        		chkList[i].checked=this.checked;
+		        	}
+		        });
+
+		        $("#btnSearch").click(function(e){
+		        	that.search();
+		        });
+
+		        $("#btnSave").click(function(e){
+		        	that.saveConfig();
+		        });
+		        //查看明细信息 页面
+		        $("#tbSearchResult tbody").click(function(e){
+		        	var target=e.target,
+		        		jdom=$(target),
+		        		sTitle=$(jdom.parent().children()[1]).text(),
+		        		sContent="";
+		        	if(!(target.nodeName=="td" || target.nodeName=="TD"))
+		        	{
+		        		return;
+		        	}
+		        	jdom.parent().parent().children().attr("style","");
+		        	jdom.parent().css({"background-color":"#00f",color:"#fff"});
+		        	var dataObj=exp.genTools.getObj(that.dataStore.searchResult, "_id", sTitle);
+		        	sContent="<h3 class='tc'>"+sTitle+"</h3>"+"<div class='tc'>作者："+dataObj.author+" | 来源："+dataObj.src+" | 日期："+dataObj.datetime+"</div><hr/>"+dataObj.content;
+
+		        	$("#htmlModal").modal({
+						keyboard: true,
+						backdrop:true,
+						show:true,
+						content:sContent,
+						title:sTitle,
+						width:"800px",
+						height:"500px"
+					});
+		        });
+
+		        $("#btnClearLog").click(function(e){
+		        	$("#messages").html("");
+		        });
+
+		        $("#btnTmpInfo").click(function(e){
+		        	that.grapTmpInfo();
+		        });
+
+		        $("#btnCar").click(function(e){
+		        	that.searchCar();
+		        });
+
+		        $("iframe").bind("load",this.iframeOnload);
+	      	},
+	      	getConfig:function(){
+			    var param={type:"get"};
+				this.socket.emit('config', param);
+	      	},
+	      	saveConfig:function(){
+				var trList=$("#tbResult tbody tr"),
+					iCount=trList.length,
+					tdList=[],
+					infoList=[],
+					domTd,
+					sSrc="",
+					sUrl="",
+					sRemark="";
+
+				for(var i=0;i<iCount;i++){
+					tdList=trList[i].children;
+					sSrc=tdList[2].innerText;
+					sUrl=tdList[3].innerText;
+					sRemark=tdList[4].innerText;
+					infoList.push({
+						src:sSrc,
+						url:sUrl,
+						remark:sRemark
+					});
+				}
+
+			    var param={
+				    	type:"save",
+				    	infoList:infoList
+				    };
+
+				this.socket.emit('config', param);
+	      	},
+	      	search:function(){
+				var sTitle=$("#inpTitle").val(),
+					sAuthor=$("#inpAuthor").val(),
+					sSrc=$("#inpSrc").val(),
+					sBegin=$("#dpBegin").val(),
+					sEnd=$("#dpEnd").val();
+
+			    var param={
+				    	//type:"email",
+				    	title:sTitle,
+				    	author:sAuthor,
+				    	src:sSrc,
+				    	begdate:sBegin,
+				    	enddate:sEnd//,
+				    	//pagenum:10,
+				    	//page:1
+				    };
+
+				this.socket.emit('search', param);
+	      	},
+	      	searchCar:function(){
+				var sSn=$("#inpSn").val(),
+					sName=$("#inpName").val();
+
+			    var param={
+				    	id:sSn,
+				    	name:sName
+				    	//pagenum:10,
+				    	//page:1
+				    };
+
+				this.socket.emit('car', param);
+	      	},
+	      	grap:function(urlList){
+	      		var param={
+	      				urlList:urlList
+	      			};
+
+	      		this.socket.emit('grap',param);
+	      	},
+	      	setKey:function(){
+	      		var sUrl=location.protocol+"//"+location.host+"/key",
+	      			param={
+	      				type:"set",
+	      				downurl:"http://127.0.0.1:3002/javascripts/关键字.txt",
+	      				keyList:["冯国庆","冯国庆_002"],
+	      				operType:"add"
+	      			};
+
+				this.socket.emit('key',param);
+	      	},
+	      	grapTmpInfo:function(sTitle){
+			    var param={};
+
+				this.socket.emit('grapTmpInfo', param);
+	      	},
+	      	iframeOnload:function(e){
+	      		alert("页面已加载完成！");
+	      		var sHtmlInfo=this.ownerDocument.children[0].innerHTML;
+	      		var urlObj=pageObj.dataStore.urlList.shift();
+	      		var param={
+	      			content:sHtmlInfo,
+	      			urlObj:urlObj
+	      		};
+	      		pageObj.socket.emit('iframeContent', param);
+	      	}
+	      };
+
+	      win.pageObj=pageObj;
+      })(window,jQuery);
+
+
+      $(function() {
+        pageObj.init();
+      })
+    </script>
+  </body>
+</html>

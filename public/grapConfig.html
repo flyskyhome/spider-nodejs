@@ -1,0 +1,41 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <title>信息采集配置</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+    <link rel="Stylesheet" type="text/css" href="./stylesheets/ztree/demo.css" />
+    <link rel="Stylesheet" type="text/css" href="./stylesheets/ztree/zTreeStyle/zTreeStyle.css" />
+    <!--link rel="stylesheet" type="text/css" href="/css/core.css" /-->
+    <link rel="stylesheet" type="text/css" href="./stylesheets/themes/gray/easyui.css"/>
+	<link rel="stylesheet" type="text/css" href="./stylesheets/themes/icon.css"/>
+</head>
+<body class="easyui-layout">
+    <div region="west" split="true" title="采集分类" style="width: 220px;">
+        <ul id="cateTree" style="height: 97%; margin-top: 0px; background-color: #FFFAF0;
+            overflow: auto" class="ztree">
+        </ul>
+    </div>
+    <div region="center" title="采集配置">
+    	<table id="siteInfo" style="height: 99%;"></table>
+    	<div id="pp" style="background:#efefef;border:1px solid #ccc;"></div>
+    </div>
+    <div id="mm_p" class="easyui-menu" style="width:120px; display:none;">
+	    <div iconCls="icon-add" id="divAdd" onclick="ModObj.addCate()">新增</div>
+	    <div iconCls="icon-edit" id="divEdit"  onclick="ModObj.modCate()">修改</div>
+	    <div iconCls="icon-remove" id="divDelete" onclick="ModObj.delCate()">删除</div>
+    </div>
+    <div id="messages"></div>
+    <script type="text/javascript" src="./javascripts/js_lib/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="./javascripts/js_lib/jquery.json-2.3.min.js"></script>
+    <script type="text/javascript" src="./javascripts/js_lib/ZTree/jquery.ztree.core-3.0.min.js"></script>
+    <script type="text/javascript" src="./javascripts/js_lib/ZTree/jquery.ztree.excheck-3.0.min.js"></script>
+    <script type="text/javascript" src="./javascripts/js_lib/ZTree/jquery.ztree.exedit-3.0.min.js"></script>
+    <!--script type="text/javascript" src="./javascripts/js_lib/lhgcore.lhgdialog.min.js?skin=blue"></script-->
+    <script type="text/javascript" src="./javascripts/js_lib/lhgdialog.min.js?skin=blue"></script>
+    <script type="text/javascript" src="./javascripts/js_lib/Dictionary.js"></script>
+    <script type="text/javascript" src="./javascripts/js_lib/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="./javascripts/js_lib/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="./javascripts/base.js"></script>
+    <script type="text/javascript" src="./javascripts/model/infoConfig.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+</body>
+</html>

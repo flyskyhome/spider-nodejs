@@ -3,7 +3,6 @@ var serach = require("../server/service/searchService.js");
 var config = require("../server/service/configService.js");
 var grap = require("../server/service/grapService.js");
 var key = require("../server/service/keyService.js");
-var grapTmpInfo= require("../server/service/grapTmpInfoService.js");
 var car= require("../server/service/carService.js");
 var stock=require("../server/service/stockService.js");
 
@@ -37,7 +36,7 @@ exports.initialize = function(server) {
 
 		//抓取信息
 		socket.on('grap',function(message){
-			grap.exec(socket,message.urlList);
+			grap.exec(message.urlList,socket);
 		});
 
 		//设置关键字
@@ -45,29 +44,14 @@ exports.initialize = function(server) {
 			key.exec(socket,message);
 		});
 
-		//抓企业信息
-		socket.on('grapTmpInfo',function(message){
-			grapTmpInfo.exec(socket,message);
-		});
 		//获取小车信息
 		socket.on('car',function(message){
 			car.exec(socket,message);
-		});
-
-		socket.on('iframeContent',function(message){
-			var aaa="";
-			/*
-	      	var param={
-	      		content:sHtmlInfo,
-	      		urlObj:urlObj
-	      	};
-	      	*/
 		});
 
 		//获取股票信息
 		socket.on("stock",function(message){
 			stock.exec(socket,message);
 		});
-
 	});
 };

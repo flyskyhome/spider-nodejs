@@ -25,8 +25,8 @@ async.auto({
      * @return {[type]}            [description]
      */
     getMarketInfo: function (callback) {
-        //market.exec(callback);
-        callback(null,"");
+        market.exec(callback);
+        //callback(null,"");
     },
     /**
      * 获取企业和市场的映射关系信息:一般不会变：转板，或新股时会有所变化
@@ -36,8 +36,8 @@ async.auto({
      */
     getCorpMap: ['getMarketInfo',function (callback, results) {
         //log(results.getMarketInfo);
-        //corpMap.exec(callback);
-        callback(null,"");
+        corpMap.exec(callback);
+        //callback(null,"");
     }],
     /**
      * 获取公司概况信息:一般不会变
@@ -48,8 +48,8 @@ async.auto({
     getBrief: ['getCorpMap', function(callback, results) {
         log("in getBrief!");
         //log(results.getCorpMap);
-        //brief_shsz.exec(callback);
-        callback(null,"");
+        brief_shsz.exec(callback);
+        //callback(null,"");
         /*
         setTimeout(function(){
             console.log('1.2: wrote file');
@@ -66,8 +66,8 @@ async.auto({
     getManagement: ['getBrief', function(callback, results) {
         log("in getManagement!");
 //        log(results.getBrief);
-        //management.exec(callback);
-        callback(null,"");
+        management.exec(callback);
+        //callback(null,"");
     }],
     /**
      * 资产负债表信息

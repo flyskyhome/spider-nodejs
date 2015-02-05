@@ -93,7 +93,7 @@ var jrjFinanceDetail_Obj=new jrjFinanceDetail({
 			summary: []
 		},
 		clearRule:[{
-			s:/<div class="textimg text-n1">.*?<\/div>/,
+			s:/<div class="textimg text-n1">.*?<\/div><\/div>/,
 			t:""
 		}]
 	});

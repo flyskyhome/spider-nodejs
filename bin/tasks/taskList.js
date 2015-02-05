@@ -1,4 +1,4 @@
-var taskList =[
+var taskList =[/*
 'apply.hzcb.gov.cn',
 'auto.ifeng.com',
 'bj.people.com.cn',
@@ -18,7 +18,8 @@ var taskList =[
 'news.hexun.com',
 'news.hongzhoukan.com',
 'news.smm.cn',
-'news.stcn.com',
+'news.stcn.com',*/
+'q.stock.sohu.com'/*,
 'roll.finance.sina.com.cn',
 't.news.fx168.com',
 'www.21cbh.com',
@@ -47,6 +48,6 @@ var taskList =[
 'www.xinhuanet.com',
 'www.yicai.com',
 'www.zgjj.cn',
-'zhibo.fx678.com'
+'zhibo.fx678.com'*/
 ];
 module.exports = taskList;

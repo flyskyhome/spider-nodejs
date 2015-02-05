@@ -417,7 +417,7 @@ genList.prototype = {
 				log("新:"+sTmpUrl+",   源:"+configObj.url);
 				newInfoList.push(infoObj);
 				isAllExisted=0;
-				detailMod.exec(infoObj.url, configObj,sChartSet,that.table);
+				detailMod.exec(infoObj.url, configObj,sChartSet,that.table,infoObj._id);
 			}
 		}
 

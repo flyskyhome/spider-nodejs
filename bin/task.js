@@ -12,7 +12,7 @@ var log = t.log;
 var workers = {};
 async.series({
 	b: function(cb) {
-
+		/*
 		//console.log('b');
 		var sPath = "../server/model/";
 		//创建批处理文件
@@ -52,23 +52,16 @@ async.series({
 				});
 			});
 		});
-
+		*/
 		cb();
 	},
 	c: function(cb) {
 		//console.log('c');
 		//createWorker("./www");
 		//createWorker("./search");
-		//createWorker("./site.js");
-		createWorker("./tasks/grapCorpInfo.js");
-		/*
-		createWorker("./tasks/market.js");
-		createWorker("./tasks/corpMap.js");
-		createWorker("./tasks/management.js");
-		createWorker("./tasks/balancesheet.js");
-		createWorker("./tasks/incomestatements.js");
-		createWorker("./tasks/cashflow.js");
-		*/
+		createWorker("./tasks/site.js");
+		//获取企业信息
+		//createWorker("./tasks/grapCorpInfo.js");
 	}
 }, function(err, results) {
 	log('main err: ', err);

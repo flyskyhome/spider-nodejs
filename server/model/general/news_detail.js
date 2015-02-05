@@ -31,10 +31,13 @@ genDetail.prototype = {
 	},
 	/**
 	 * 获取信息
-	 * @param  {[type]} sChartSet 待采网页的字符集
-	 * @return {[type]}           [description]
+	 * @param  {[type]} sUrl        详细页链接地址
+	 * @param  {[type]} sChartSet   字符集
+	 * @param  {[type]} urlConfig   配置信息
+	 * @param  {[type]} sTitle4List 来之列表页的标题
+	 * @return {[type]}             [description]
 	 */
-	getInfo: function(sUrl, sChartSet, urlConfig) {
+	getInfo: function(sUrl, sChartSet, urlConfig,sTitle4List) {
 		var that = this;
 
 		var curUrlObj = url.parse(sUrl);
@@ -59,7 +62,7 @@ genDetail.prototype = {
 					if (idx >= 0) {
 						listUrlObj.detail_errList.splice(idx, 1);
 					}
-					var infoList = that.parse(sHtml, configObj.srcUrl),
+					var infoList = that.parse(sHtml, configObj.srcUrl,sTitle4List),
 						iCount = infoList.length,
 						infoObj = "",
 						sContent = "",
@@ -366,9 +369,18 @@ genDetail.prototype = {
 		}
 		return result;
 	},
-	doWork: function(sUrl, urlConfig, sChartSet, sTablePre) {
+	/**
+	 * [doWork description]
+	 * @param  {[type]} sUrl      [description]
+	 * @param  {[type]} urlConfig [description]
+	 * @param  {[type]} sChartSet [description]
+	 * @param  {[type]} sTablePre [description]
+	 * @param  {[type]} sTitle    [description]
+	 * @return {[type]}           [description]
+	 */
+	doWork: function(sUrl, urlConfig, sChartSet, sTablePre,sTitle) {
 		this.init(sUrl, urlConfig, sTablePre);
-		this.getInfo(sUrl, sChartSet, urlConfig);
+		this.getInfo(sUrl, sChartSet, urlConfig,sTitle);
 	},
 	/**
 	 * 对外开放的执行接口

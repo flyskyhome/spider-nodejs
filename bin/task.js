@@ -1,12 +1,7 @@
 var fork = require('child_process').fork;
 
-//var fork = require('child_process').fork;
-//var cpus = require('os').cpus();
 var async = require('async');
 var fs = require('fs');
-//var exec = require('child_process').exec;
-//var subtask = require("../server/service/taskService.js");
-//var taskList = require("./taskList.js");
 var t = require("../server/tools/t.js");
 var log = t.log;
 var workers = {};

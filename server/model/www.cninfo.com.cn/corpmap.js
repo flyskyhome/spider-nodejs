@@ -5,6 +5,9 @@ var genDataDeal=require("./gendatadeal.js");
 var cheerio = require('cheerio');
 var db = new dbobj("flyskyhome");
 var async = require('async');
+var fs = require('fs');
+var t = require('../../tools/t.js');
+var log = t.log;
 
 var corpMap = {
 	init: function(cb) {
@@ -18,7 +21,7 @@ var corpMap = {
 		});
 	},
 	getInfo: function(obj, cb) {
-		console.log("getInfo");
+		log("getInfo");
 
 		//因为用async调用时 this 为node执行环境
 		var that = obj.operObj.jsObj,
@@ -29,22 +32,22 @@ var corpMap = {
 			sPre = that.preUrl,
 			sSuf = that.sufUrl,
 			urlList = [];
-		console.log(that.tbCode);
+		log(that.tbCode);
 		db.init(that.tbCode);
-		console.log(iCount);
+		//console.log(iCount);
 		//执行循环获取各个市场的企业数据
 		for (var i = 0; i < iCount; i++) {
 			tmpObj = objList[i];
 
 			sUrl = sPre + tmpObj.mid + "/" + tmpObj.pid + "/" + tmpObj._id + sSuf;
-			console.log(sUrl);
+			log(sUrl);
 			urlList.push({
 				obj: tmpObj,
 				urlObj: url.parse(sUrl)
 			});
 		}
 
-		console.log(urlList);
+		//console.log(urlList);
 
 		//通过同步控制，保证最后一项执行的时候
 		async.each(urlList, function(u, callback) {
@@ -56,19 +59,52 @@ var corpMap = {
 					//console.log(infoList[i]);
 					db.add(infoList[i]);
 				}
+				that.write2file(newobj,infoList);
 			}, u.obj);
 		}, function(err) {
 			//如果出错
 			if (err) {
-				console.log('err: ' + err);
+				log('err: ' + err);
 				cb("getInfo download err:", err);
 			}
 			//如果未出错
 			else {
+				log("未出错！！");
 				cb(null, obj.operObj);
 			}
 		});
 		cb(null, obj.operObj);
+	},
+	/**
+	 * 写数据入文件
+	 * @param  {[type]} markObj  [description]
+	 * @param  {[type]} infoList [description]
+	 * @return {[type]}          [description]
+	 */
+	write2file:function(markObj,infoList){
+		var sFileName=markObj.mid+"_"+markObj.pid+".js",
+			sContent="",
+			iCount=infoList.length,
+			tmpInfo;
+		if(iCount>0){
+			tmpInfo=infoList[0];
+			sContent="{id:'"+tmpInfo._id+"',name:'"+tmpInfo.name+"'}";
+			//生成内容信息
+			for(var i=1;i<iCount;i++){
+				tmpInfo=infoList[i];
+				sContent+=",\n\r{id:'"+tmpInfo._id+"',name:'"+tmpInfo.name+"'}";
+			}
+			sContent="var "+markObj.mid+"_"+markObj.pid+"=[\n\r"+sContent+"\n\r];\n\rmodule.exports = "+markObj.mid+"_"+markObj.pid+";";
+			fs.writeFile(__dirname + '/../../data/corpMap/' + sFileName, sContent, function(err) {
+				log(__dirname + '/../../data/corpMap/' + sFileName);
+				if (err) {
+					log(err.message);
+					throw err;
+				} else {
+					log(sFileName+' saved!');
+				}
+			});
+		}
 	},
 	parse: function(sHtml, sMId, sPId) {
 		var $ = cheerio.load(sHtml),

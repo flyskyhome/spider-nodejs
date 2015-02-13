@@ -1,2 +1,2 @@
 # 忽略 hjs 目录下的所有文件
-node_modules/hjs/
+node_modules/

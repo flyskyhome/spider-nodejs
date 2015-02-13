@@ -27,9 +27,16 @@ var xueqiuDetail_Obj=new xueqiuDetail({
 				r:/(.*?)\(.*?:\d+\)/
 			}],
 			//市盈率(静态_动态)
-			'市盈率LYR/TTM':[{
+			'静态市盈率LYR':[{
 				d: '.topTable td span',
-				di:12
+				di:12,
+				r:/(.*?)\/.*/
+			}],
+			//市盈率(静态_动态)
+			'动态市盈率TTM':[{
+				d: '.topTable td span',
+				di:12,
+				r:/.*?\/(.*)/
 			}],
 			'每股净资产':[{
 				d: '.topTable td span',

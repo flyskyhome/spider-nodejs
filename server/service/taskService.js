@@ -50,6 +50,9 @@ var subtask = {
 		}
 		else{
 			console.log("没有"+sSiteInfo+": 相关信息");
+			grapService.exec([{
+				url:"http://"+sSiteInfo
+			}]);
 		}
 	},
 	getRealSite:function(sSiteInfo){

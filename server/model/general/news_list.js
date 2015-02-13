@@ -36,6 +36,7 @@ genList.prototype = {
 	 * @param  {[type]} urlList     当前host需要采集的列表页信息
 	 * @param  {[type]} sTablePre  	表名前缀
 	 * @param  {[type]} addPageInfo 是否补充分页信息
+	 * @param  {[type]} sCharSet 	字符集
 	 * @return {[type]}             [description]
 	 */
 	init: function(urlCount,urlList, tablePre,addPageInfo,sCharSet) {
@@ -68,10 +69,11 @@ genList.prototype = {
 	 * 获取网页信息
 	 * @param  {[type]} sKey      待过滤的关键字
 	 * @param  {[type]} sChartSet 网页字符集
+ 	 * @param  {[type]} detail_waitTime  详细页信息采集时每个页面间隔等待时间
 	 * @return {[type]}           [description]
 	 * @chainable
 	 */
-	getInfo: function(sKey, sChartSet) {
+	getInfo: function(sKey, sChartSet,detail_waitTime) {
 		var that = this,
 			urlCount = this.urlList.length,
 			detailMod=null;
@@ -99,7 +101,7 @@ genList.prototype = {
 							if(that.dataStore.modInfo[tmpUrlObj.host]){
 								detailMod = that.dataStore.modInfo[tmpUrlObj.host]
 								//log("-----cccccccc-----"+tmpUrlObj.host);
-								that.isExisted(infoList,detailMod,configObj,sChartSet);
+								that.isExisted(infoList,detailMod,configObj,sChartSet,detail_waitTime);
 							}
 							else{
 								var sModelPath = "../" + tmpUrlObj.host + "/news_detail.js";
@@ -125,7 +127,7 @@ genList.prototype = {
 											//log("-----bbbbb-----"+tmpUrlObj.host);
 										}
 
-										that.isExisted(infoList,detailMod,configObj,sChartSet);
+										that.isExisted(infoList,detailMod,configObj,sChartSet,detail_waitTime);
 										//that.isExisted(infoList,detailMod_Obj,configObj,sChartSet);
 									} else {
 										//log(__dirname + sModelPath + " 文件不存在!");
@@ -362,9 +364,10 @@ genList.prototype = {
 	 * @param  {[type]}  detailMod 明细模块
 	 * @param  {[type]}  configObj [description]
 	 * @param  {[type]}  sChartSet [description]
+	 * @param  {int}  	 detail_waitTime 详细页信息采集时每个页面间隔等待时间
 	 * @return {Boolean}           [description]
 	 */
-	isExisted:function(infoList,detailMod,configObj,sChartSet){
+	isExisted:function(infoList,detailMod,configObj,sChartSet,detail_waitTime){
 		var that=this,
 			iCount=infoList.length,
 			infoObj,
@@ -373,7 +376,7 @@ genList.prototype = {
 
 			newInfoList=[],
 			isAllExisted=1;
-
+		detail_waitTime=detail_waitTime||0;
 		if(!curOkInfo){
 			okInfo[configObj.url]=curOkInfo={
 				type:"list",
@@ -417,7 +420,14 @@ genList.prototype = {
 				log("新:"+sTmpUrl+",   源:"+configObj.url);
 				newInfoList.push(infoObj);
 				isAllExisted=0;
-				detailMod.exec(infoObj.url, configObj,sChartSet,that.table,infoObj._id);
+//				if(detail_waitTime){
+					//log(i*detail_waitTime);
+					setTimeout(detailMod.exec,i*detail_waitTime,detailMod,infoObj.url, configObj,sChartSet,that.table,infoObj._id);
+					//detailMod.exec(infoObj.url, configObj,sChartSet,that.table,infoObj._id);
+//				}
+//				else{
+//					detailMod.exec(infoObj.url, configObj,sChartSet,that.table,infoObj._id);
+//				}
 			}
 		}
 

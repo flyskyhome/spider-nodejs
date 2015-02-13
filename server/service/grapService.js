@@ -33,7 +33,8 @@ var grapService = {
 			sUrl = urlList[i].url;
 			urlObj = url.parse(sUrl);
 			sHost = urlObj.host;
-
+			log(sUrl);
+			log(urlObj);
 			//如果host中还不存在
 			if (myUtil.indexOfObj(hostList, "", sHost) < 0) {
 				hostList.push(sHost);

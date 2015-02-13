@@ -3,10 +3,11 @@ var cheerio = require('cheerio');
 var myUtil = require("../../tools/myutil.js");
 var page = require("../../tools/page.js");
 var dbobj = require("../../tools/db.js");
-var keyInfo = require("../../data/keyList.js");
-var t = require("../../tools/t.js");
 var subtask = require("../../service/taskService.js");
+var defaultRule=require("../../data/rule.js");
+var keyInfo = require("../../data/keyList.js");
 var okInfo = require("../../data/okInfo.js");
+var t = require("../../tools/t.js");
 
 var db = new dbobj("flyskyhome");
 var db4email = new dbobj("flyskyhome");
@@ -42,21 +43,35 @@ genDetail.prototype = {
 
 		var curUrlObj = url.parse(sUrl);
 		var listUrlObj = okInfo[urlConfig.url];
+		if(!listUrlObj){
+			okInfo[urlConfig.url]=listUrlObj={};
+		}
+
+		//如果存在采集成功的页面信息
+		if (!listUrlObj.detail_okList) {
+			//log("没有找到相应的 detail_okList 信息! :" + configObj.url);
+			listUrlObj.detail_okList = [];
+		}
+		if (!listUrlObj.detail_errList) {
+			//log("没有找到相应的 detail_errList 信息! :" + configObj.url);
+			listUrlObj.detail_errList = [];
+		}
+		//log(okInfo);
+		//log("---------------------listUrlObj--------------"+urlConfig.url);
+		//log(listUrlObj);
+		//log("---------------------listUrlObj--------------");
 		try {
 			page.download(curUrlObj, sChartSet, function(sHtml, configObj) {
 				that.dataStore.sn = (that.dataStore.sn - 0 + 1);
 
+				//log(sHtml);
 				if (sHtml) {
-					//如果存在采集成功的页面信息
-					if (!listUrlObj.detail_okList) {
-						log("没有找到相应的 detail_okList 信息! :" + configObj.url);
-						listUrlObj.detail_okList = [];
-					}
 
 					listUrlObj.detail_okList.push({
 						type: "detail",
 						url: configObj.srcUrl
 					});
+
 					//判断当前获取正确的信息是否已经存在于错误信息中，如是，则从错误信息中删除
 					var idx = myUtil.indexOfObj(listUrlObj.detail_errList, "url", configObj.srcUrl);
 					if (idx >= 0) {
@@ -81,10 +96,6 @@ genDetail.prototype = {
 
 				} else {
 					//下载出错了
-					//把错误页信息存入数据库
-					if (!listUrlObj.detail_errList) {
-						listUrlObj.detail_errList = [];
-					}
 					listUrlObj.detail_errList.push({
 						type: "detail",
 						url: configObj.errUrl,
@@ -95,9 +106,6 @@ genDetail.prototype = {
 
 			}, urlConfig);
 		} catch (e) {
-			if (listUrlObj.detail_errList) {} else {
-				listUrlObj.detail_errList = [];
-			}
 			listUrlObj.detail_errList.push({
 				type: "detail",
 				url: curUrlObj.url
@@ -279,7 +287,7 @@ genDetail.prototype = {
 
 							//清理内容中需要清理的信息
 							//执行默认清理规则
-							ruleList = this.dataStore.defaultRule.clear;
+							ruleList = defaultRule.clear;
 							iCount = ruleList.length;
 							for (var i = 0; i < iCount; i++) {
 								tmpRule = ruleList[i];
@@ -375,7 +383,7 @@ genDetail.prototype = {
 	 * @param  {[type]} urlConfig [description]
 	 * @param  {[type]} sChartSet [description]
 	 * @param  {[type]} sTablePre [description]
-	 * @param  {[type]} sTitle    [description]
+	 * @param  {[type]} sTitle    来之列表页的标题
 	 * @return {[type]}           [description]
 	 */
 	doWork: function(sUrl, urlConfig, sChartSet, sTablePre,sTitle) {
@@ -384,14 +392,17 @@ genDetail.prototype = {
 	},
 	/**
 	 * 对外开放的执行接口
+	 * @param  {[type]} detailObj 详细页采集对象
 	 * @param  {[type]} sUrl      详细页地址
 	 * @param  {[type]} urlConfig [description]
 	 * @param  {[type]} sChartSet 详细页的字符集
 	 * @param  {[type]} sTablePre 存放数据表的前缀信息
-	 * @param  {[type]} okUrlList  成功解析的列表页链接信息列表
+	 * @param  {[type]} sTitle    来之列表页的标题
 	 * @return {[type]}           [description]
 	 */
-	exec: function(sUrl, urlConfig, sChartSet, sTablePre) {
+	exec: function(detailObj,sUrl, urlConfig, sChartSet, sTablePre,sTitle) {
+		log(sUrl);
+		detailObj.doWork(sUrl, urlConfig, sChartSet, sTablePre, sTitle);
 		/*
 		this.doWork(sUrl, urlConfig, sChartSet, sTablePre);
 		this.dataStore.parseRuleList = [{

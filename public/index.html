@@ -106,6 +106,7 @@
               </div>
               <div class="tab-pane p5 bd1" id="loginfo" style="border-top:0">
               	<a id="btnClearLog" class="btn btn-small w100">清除日志</a>
+              	<a id="btnTmpInfo" class="btn btn-small w100">临时信息采集</a>
 				<table id="tbGrapResult" class="table table-bordered mt10">
 	              <thead>
 	                <tr>
@@ -153,7 +154,8 @@
 	      	},
 	      	initSocket:function(){
 	      		var that=this;
-		        this.socket = io.connect('/');
+		        //this.socket = io.connect('/');
+		        this.socket=io();
 				this.socket.on('message', function(data) {
 					data = JSON.parse(data);
 					$('#messages').append('<div class="' + data.type + '">' + data.message +
@@ -178,7 +180,7 @@
 
 						    	for(var i=0;i<iCount;i++){
 						    		rec=dataInfo[i];
-						    		sTrInfo="<tr><td>"+(i-0+1)+"</td><td class='tl'><a href='"+rec.srcUrl+"' target='_blank'>"+rec._id+"</a></td><td class='tl'>"+rec.author+"</td><td>"+rec.datetime+"</td><td>"+rec.src+"</td><td>"+rec.orgSrc+"</td></tr>";
+						    		sTrInfo="<tr><td>"+(i-0+1)+"</td><td class='tl'>"+rec._id+"</td><td class='tl'>"+rec.author+"</td><td>"+rec.datetime+"</td><td>"+rec.src+"</td><td>"+rec.orgSrc+"</td></tr>";
 						    		sHtml+=sTrInfo;
 						    	}
 						    	tbodyDom.html(sHtml);
@@ -291,6 +293,13 @@
 						default:
 							break;
 					}
+				});
+
+				this.socket.on('iframe', function(data) {
+					that.dataStore.urlList=data.urlList;
+					var urlObj=that.dataStore.urlList[0];
+					$('#messages').append('<div class="' + data.type + '">' + urlObj.url +'</div>');
+					$("iframe").attr("src",urlObj.url);
 				});
 	      	},
 	      	initData:function(){
@@ -473,6 +482,10 @@
 		        	$("#messages").html("");
 		        });
 
+		        $("#btnTmpInfo").click(function(e){
+		        	that.grapTmpInfo();
+		        });
+
 		        $("#btnCar").click(function(e){
 		        	that.searchCar();
 		        });
@@ -562,6 +575,21 @@
 	      			};
 
 				this.socket.emit('key',param);
+	      	},
+	      	grapTmpInfo:function(sTitle){
+			    var param={};
+
+				this.socket.emit('grapTmpInfo', param);
+	      	},
+	      	iframeOnload:function(e){
+	      		alert("页面已加载完成！");
+	      		var sHtmlInfo=this.ownerDocument.children[0].innerHTML;
+	      		var urlObj=pageObj.dataStore.urlList.shift();
+	      		var param={
+	      			content:sHtmlInfo,
+	      			urlObj:urlObj
+	      		};
+	      		pageObj.socket.emit('iframeContent', param);
 	      	}
 	      };
 

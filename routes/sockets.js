@@ -7,7 +7,8 @@ var car= require("../server/service/carService.js");
 var stock=require("../server/service/stockService.js");
 
 exports.initialize = function(server) {
-	io = io.listen(server);
+	//io = io.listen(server);
+	io = io(server);
 	io.on("connection", function(socket) {
 		socket.send(JSON.stringify({
 			type: 'serverMessage',

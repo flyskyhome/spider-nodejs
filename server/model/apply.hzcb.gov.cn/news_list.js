@@ -24,14 +24,14 @@ hzcbList.prototype.getPageUrlList = function(urlList, sCharSet) {
 		urlObj;
 	for (var i = 0; i < iCount; i++) {
 		urlObj = urlList[i];
-		for (j = 1; j < 388; j++) {
+		for (j = 1; j < 318; j++) {
 			var newObj = {};
 			//复制原有url对象属性
 			for (var key in urlObj) {
 				newObj[key] = urlObj[key];
 			}
 			//修改链接地址
-			newObj.url = urlObj.url + "?issueNumber=201501&pageNo=" + j;
+			newObj.url = urlObj.url + "?issueNumber=201502&pageNo=" + j;
 			urlList.push(newObj)
 		}
 	}
@@ -173,8 +173,8 @@ hzcbList.prototype.isComplete = function() {
 hzcbList.prototype.exec = function(urlList, sKey, urlCount) {
 	console.log(sKey);
 	console.log(urlList);
-	this.init(urlCount, urlList, "hzcb", 1);
-	db.init("hzcb" + "_list");
+	this.init(urlCount, urlList, "new_hzcb", 1);
+	db.init("new_hzcb" + "_list");
 	this.getInfo(sKey, "utf-8");
 };
 

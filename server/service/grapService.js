@@ -15,7 +15,13 @@ var log=t.log;
 var grapService = {
 	dataStore:{
 	},
-	exec: function(urlList) {
+	/**
+	 * 执行抓取动作
+	 * @param  {[type]} urlList [description]
+	 * @param  {[type]} reExec  任务重新执行标记，在列表或详细页判断抓取完成之后，提供
+	 * @return {[type]}         [description]
+	 */
+	exec: function(urlList,reExec) {
 		log("采集开始:");
 		var iCount = urlList.length,
 			sUrl = "",
@@ -26,15 +32,16 @@ var grapService = {
 			hostObjList = [],
 			modelObjList = [],
 			urlObj,
-			sHost="";;
+			sHost="",
+			reExec=reExec||0;
 
 		//解析Url,获取host，剔除重复
 		for (var i = 0; i < iCount; i++) {
 			sUrl = urlList[i].url;
 			urlObj = url.parse(sUrl);
 			sHost = urlObj.host;
-			log(sUrl);
-			log(urlObj);
+			//log(sUrl);
+			//log(urlObj);
 			//如果host中还不存在
 			if (myUtil.indexOfObj(hostList, "", sHost) < 0) {
 				hostList.push(sHost);
@@ -70,12 +77,12 @@ var grapService = {
 			urlCount=urlList.length;
 
 			if(this.dataStore[sHost]){
-				//log("--------------------------this.dataStore-----------------------");
+				log("--------------------------this.dataStore-----------------------");
 				ListModel=this.dataStore[sHost];
-				ListModel.exec(pathList, "",urlCount);
+				ListModel.exec(pathList, "",urlCount,reExec);
 			}
 			else{
-				//log("---------sssssss-----------------this.dataStore-----------------------");
+				log("---------sssssss-----------------this.dataStore-----------------------");
 				sModelPath = "../model/" + hostList[i] + "/news_list.js";
 				if (fs.existsSync(__dirname + "/" + sModelPath)) {
 					//console.log("grap:  "+sModelPath);
@@ -85,7 +92,7 @@ var grapService = {
 					//console.log(ListModel);
 
 	//				ListModel.exec(hostObjList[i].pathList, "",urlList.length);
-					ListModel.exec(pathList, "",urlCount);
+					ListModel.exec(pathList, "",urlCount,reExec);
 				} else {
 					console.log(__dirname + sModelPath + " 文件不存在!");
 				};

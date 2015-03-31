@@ -10,6 +10,7 @@ var myUtil = require("../tools/myutil.js");
 var subtask = {
 	exec:function(sSiteInfo){
 //		var objList=siteConfigInfo[this.getRealSite(sSiteInfo)];
+		//找到对应站点的待采页面列表
 		var objList=siteConfigInfo[sSiteInfo],
 			obj,
 			idx=-1,

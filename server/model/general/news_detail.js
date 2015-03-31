@@ -3,7 +3,10 @@ var cheerio = require('cheerio');
 var myUtil = require("../../tools/myutil.js");
 var page = require("../../tools/page.js");
 var dbobj = require("../../tools/db.js");
-var subtask = require("../../service/taskService.js");
+//var subtask = require("../../service/taskService.js");
+
+var grapService = require("../../service/grapService.js");
+
 var defaultRule=require("../../data/rule.js");
 var keyInfo = require("../../data/keyList.js");
 var okInfo = require("../../data/okInfo.js");
@@ -92,7 +95,7 @@ genDetail.prototype = {
 							db4email.add(infoObj);
 						}
 					}
-					that.isComplete(configObj.url);
+					that.isComplete(configObj.url,configObj);
 
 				} else {
 					//下载出错了
@@ -101,7 +104,7 @@ genDetail.prototype = {
 						url: configObj.errUrl,
 						reseaon: configObj.errInfo
 					});
-					that.isComplete(configObj.url);
+					that.isComplete(configObj.url,configObj);
 				}
 
 			}, urlConfig);
@@ -110,7 +113,7 @@ genDetail.prototype = {
 				type: "detail",
 				url: curUrlObj.url
 			});
-			that.isComplete(urlConfig.url);
+			that.isComplete(urlConfig.url,urlConfig);
 		}
 	},
 	/**
@@ -339,7 +342,7 @@ genDetail.prototype = {
 			return [];
 		}
 	},
-	isComplete: function(sListUrl) {
+	isComplete: function(sListUrl,urlConfig) {
 		var that = this,
 			result = 0,
 			obj = okInfo[sListUrl],
@@ -353,7 +356,7 @@ genDetail.prototype = {
 
 		if (okCount + errCount == obj.count) {
 			result = 1;
-			log("详细页采集已全部完成!");
+			log(sListUrl+": 详细页采集已全部完成!");
 			//显示结果信息
 			log("出错个数err:" + errCount);
 
@@ -368,9 +371,17 @@ genDetail.prototype = {
 			function reExec() {
 				//log("detail reExec start");
 				//log(sListUrl);
-				//log("detail reExec end");
+				//log(urlConfig);
 				urlObj = url.parse(sListUrl);
-				subtask.exec(urlObj.host);
+				var objList=[{
+					url: urlConfig.url,
+  					src: urlConfig.src,
+  					remark: urlConfig.remark,
+  					siteName: urlConfig.siteName
+				}];
+				//log("detail reExec end");
+				grapService.exec(objList,1);
+				//subtask.exec(urlObj.host);
 			}
 		} else {
 			//log("列表内页采集还差:"+(iCount-completedNum)+","+iCount+","+completedNum);
@@ -401,7 +412,7 @@ genDetail.prototype = {
 	 * @return {[type]}           [description]
 	 */
 	exec: function(detailObj,sUrl, urlConfig, sChartSet, sTablePre,sTitle) {
-		log(sUrl);
+		//log(sUrl);
 		detailObj.doWork(sUrl, urlConfig, sChartSet, sTablePre, sTitle);
 		/*
 		this.doWork(sUrl, urlConfig, sChartSet, sTablePre);

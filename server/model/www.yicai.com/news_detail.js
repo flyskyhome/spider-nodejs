@@ -18,6 +18,8 @@ var yicaiDetail_Obj=new yicaiDetail({
 			title: [{
 				//dom规则
 				d: ".articleTitle h1"
+			},{
+				d:".title"
 			}],
 			//作者
 			author:[{

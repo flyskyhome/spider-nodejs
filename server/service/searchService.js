@@ -42,7 +42,7 @@ var searchService = {
 			iCount = titleList.length;
 			if (iCount > 0) {
 				for (var i = 0; i < iCount; i++) {
-					sCont4Title += "_id:" + "/^.*" + titleList[i] + ".*$/,";
+					sCont4Title += "_id:" + "/^.*" + titleList[i] + ".*$/i,";
 				}
 				sCont4Title = sCont4Title.substr(0, sCont4Title.length - 1);
 			}
@@ -50,7 +50,7 @@ var searchService = {
 		}
 
 		if (sAuthor) {
-			sCont4Author = "author:" + "/^.*" + sAuthor + ".*$/";
+			sCont4Author = "author:" + "/^.*" + sAuthor + ".*$/i";
 			if (sCont) {
 				sCont += "," + sCont4Author;
 			} else {
@@ -59,7 +59,7 @@ var searchService = {
 		}
 
 		if (sSrc) {
-			sCont4Src = "src:" + "/^.*" + sSrc + ".*$/";
+			sCont4Src = "src:" + "/^.*" + sSrc + ".*$/i";
 			if (sCont) {
 				sCont += "," + sCont4Src;
 			} else {

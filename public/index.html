@@ -76,12 +76,12 @@
 				<table id="tbSearchResult" class="table table-bordered mt10">
 	              <thead>
 	                <tr>
-	                  <th>序号</th>
-	                  <th>标题</th>
-	                  <th>作者</th>
-	                  <th>日期</th>
-	                  <th>来源</th>
-	                  <th>采集源</th>
+	                  <th dataKey="sn">序号</th>
+	                  <th dataKey="_id">标题</th>
+	                  <th dataKey="author">作者</th>
+	                  <th dataKey="date">日期</th>
+	                  <th datakey="src">来源</th>
+	                  <th datakey="src_01">采集源</th>
 	                </tr>
 	              </thead>
 	              <tbody>
@@ -121,7 +121,7 @@
 	            <div id="messages"></div>
               </div>
               <div class="tab-pane p5 bd1" id="pageinfo" style="border-top:0">
-				<iframe src=""></iframe>
+				<object type="application/x-shockwave-flash" id="flashPalyer" name="flashPalyer" align="middle" data="http://www.yicai.com/bravo/BravoPlayer.swf" width="798" height="576"><param name="quality" value="high"><param name="bgcolor" value="#000000"><param name="allowscriptaccess" value="always"><param name="allowfullscreen" value="true"><param name="flashvars" value="api=http://fastlive.yicai.com&amp;type=vod&amp;bravoConfigUrl=http://www.yicai.com/bravo/plugins/BravoConfig.xml&amp;core=http://fastlive.yicai.com/p2p/p2pcore.swf&amp;skin=http://www.yicai.com/bravo/plugins/BravoPlayerSkin.swf&amp;cid=5352&amp;default_stream=ld&amp;ld=bb.mp4&amp;window=window&amp;isPlayAd=0&amp;autoPlay=1&amp;width=798&amp;height=576"></object>
               </div>
             </div>
           </div>
@@ -145,7 +145,8 @@
       (function(win,$){
 	      var pageObj={
 	      	dataStore:{
-	      		searchResult:[]
+	      		searchResult:[],
+	      		direction:"asc"
 	      	},
 	      	init:function(){
 		        this.initSocket();
@@ -169,21 +170,8 @@
 						case "res":
 							//如果正常获取
 							if(res.state=="ok"){
-								var dataInfo=res.objList;
-						    	var iCount=dataInfo.length,
-						    		tbodyDom=$("#tbSearchResult tbody"),
-						    		rec={},
-						    		sTrInfo="",
-						    		sHtml="";
-
-						    	that.dataStore.searchResult=dataInfo;
-
-						    	for(var i=0;i<iCount;i++){
-						    		rec=dataInfo[i];
-						    		sTrInfo="<tr><td>"+(i-0+1)+"</td><td class='tl'>"+rec._id+"</td><td class='tl'>"+rec.author+"</td><td>"+rec.datetime+"</td><td>"+rec.src+"</td><td>"+rec.orgSrc+"</td></tr>";
-						    		sHtml+=sTrInfo;
-						    	}
-						    	tbodyDom.html(sHtml);
+						    	var tbodyDom=$("#tbSearchResult tbody");
+								that.loadData(tbodyDom,res.objList);
 							}
 							else{
 								alert(res.message);
@@ -228,7 +216,7 @@
 				    	for(var i=0;i<iCount;i++){
 				    		obj=objList[i];
 				    		sSiteName=obj.src;
-				    		sUrl=obj.url;
+				    		sUrl=obj._id;
 				    		sRemark=obj.remark;
 				        		sTrInfo+="<tr><td><input type='checkbox'></td>"+"<td>"+(i-0+1)+"</td><td>"+sSiteName+"</td><td>"+sUrl+"</td><td>"+sRemark+"</td><td><a href='#' class='btn btn-small btn-info'>配置</a><a href='#' class='btn btn-small btn-warning'>采集</a><a href='#' class='btn btn-small btn-danger'>删除</a>"+"</td></tr>";
 				    	}
@@ -491,6 +479,19 @@
 		        });
 
 		        $("iframe").bind("load",this.iframeOnload);
+
+		        $("#tbSearchResult th").click(function(e){
+		        	var targetObj=$(e.target),
+		        		sDataKey=targetObj.attr("dataKey");
+		        	var objList=that.dataStore.searchResult;
+		        	
+		        	//进行拼音排序
+		        	that.dataStore.searchResult=that.sort4Py(objList,sDataKey,that.dataStore.direction);
+		        	that.dataStore.direction=that.dataStore.direction=="asc"?"desc":"asc";
+
+		        	var bodyDom=$("#tbSearchResult tbody");
+		        	that.loadData(bodyDom,that.dataStore.searchResult);
+		        });
 	      	},
 	      	getConfig:function(){
 			    var param={type:"get"};
@@ -590,14 +591,28 @@
 	      			urlObj:urlObj
 	      		};
 	      		pageObj.socket.emit('iframeContent', param);
+	      	},
+	      	loadData:function(domObj,objList,configInfo){
+				var iCount=objList.length,
+					rec={},
+					sTrInfo="",
+					sHtml="";
+				this.dataStore.searchResult=objList;
+				for(var i=0;i<iCount;i++){
+					rec=objList[i];
+					sTrInfo="<tr><td>"+(i-0+1)+"</td><td class='tl'><a href='"+rec.srcUrl+"' target='_balnk'>"+rec._id+"</a></td><td class='tl'>"+rec.author+"</td><td>"+rec.datetime+"</td><td>"+rec.src+"</td><td>"+rec.orgSrc+"</td></tr>";
+					sHtml+=sTrInfo;
+				}
+				domObj.html(sHtml);	      		
 	      	}
 	      };
 
-	      win.pageObj=pageObj;
+	      exp.pageObj=pageObj;
       })(window,jQuery);
 
 
       $(function() {
+      	window.pageObj=imp(["genTools","pageObj"]);
         pageObj.init();
       })
     </script>

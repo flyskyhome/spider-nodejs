@@ -499,6 +499,31 @@
         },
         setPageTitle:function(sTitle){
             document.title=sTitle;
+        },
+        /**
+         * 按拼音排序
+         * @param  {Array}  objList   对象列表
+         * @param  {string} sSortKey  排序关键之
+         * @param  {string} direction 排序方向
+         * @return {Array}           排序后的对象列表
+         */
+        sort4Py:function(objList,direction,sSortKey){
+            //中文拼音排序,忽略英文字符的大小写
+            if(direction=="asc"){
+                objList.sort(function(a,b){
+                    var s1=a[sSortKey].toLowerCase();
+                    var s2=b[sSortKey].toLowerCase();
+                    return s1.localeCompare(s2);                        
+                });
+            }
+            else{
+                objList.sort(function(a,b){
+                    var s1=a[sSortKey].toLowerCase();
+                    var s2=b[sSortKey].toLowerCase();
+                    return s2.localeCompare(s1);                                                
+                });      
+            }
+            return objList;
         }
     };
 

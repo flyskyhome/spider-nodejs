@@ -24,8 +24,8 @@ hzcbList.prototype.getPageUrlList = function(urlList, sCharSet) {
 		urlObj;
 	for (var i = 0; i < iCount; i++) {
 		urlObj = urlList[i];
-		for (j = 1; j < 318; j++) {
-			var newObj = {};
+		for (j = 1; j < 392; j++) {
+			var newObj = {}
 			//复制原有url对象属性
 			for (var key in urlObj) {
 				newObj[key] = urlObj[key];
@@ -149,7 +149,8 @@ hzcbList.prototype.getInfo = function(sKey, sCharSet) {
 };
 
 hzcbList.prototype.isComplete = function() {
-	var result = 0,
+	var that=this,
+		result = 0,
 		okCount = this.dataStore.list_okList.length,
 		errCount = this.dataStore.list_errList.length,
 		sumCount = this.dataStore.urlCount,
@@ -159,11 +160,22 @@ hzcbList.prototype.isComplete = function() {
 		result = 1;
 		console.log("列表页采集全部完成");
 		console.log("出错个数err:" + errCount);
-		console.log(this.dataStore.list_errList);
+		//console.log(this.dataStore.list_errList);
 		var errUrlList = this.dataStore.list_errList;
-		//继续执行
-		//this.init(errUrlList.length,errUrlList, "hzcb",0);
-		//this.getInfo(this.dataStore.keyInfo, "utf-8");
+
+		if(errCount){
+			setTimeout(reExec, 15000);
+		}
+
+		function reExec(){
+			that.dataStore.sn=0;
+			//继续执行
+			that.init(errUrlList.length,errUrlList, "new_hzcb",0);
+			that.getInfo(that.dataStore.keyInfo, "utf-8");
+			
+			that.dataStore.list_okList=[];
+			that.dataStore.list_errList=[];	
+		}
 	} else {
 		console.log("列表页采集还差:" + iCount);
 	}

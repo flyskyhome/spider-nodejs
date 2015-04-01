@@ -507,7 +507,7 @@
          * @param  {string} direction 排序方向
          * @return {Array}           排序后的对象列表
          */
-        sort4Py:function(objList,direction,sSortKey){
+        sort4Py:function(objList,sSortKey,direction){
             //中文拼音排序,忽略英文字符的大小写
             if(direction=="asc"){
                 objList.sort(function(a,b){

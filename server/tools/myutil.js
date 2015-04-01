@@ -192,26 +192,7 @@ var myUtil = {
 		sInfo=sInfo.replace(/(\d{4})-(\d{1,2})-(\d{1,2}) (\d{1,2}):(\d{1,2}):(\d{1,2})/,"$1-0$2-0$3 0$4:0$5:0$6");
 		//处理三位数字成2位
 		sInfo=sInfo.replace(/(\D)(\d{1})(\d{2})/g,'$1$3');
-		/*
-		var mList=sInfo.split(" ");
-		if(mList.length>1){
-			var
-				sDate=mList[0],
-				sTime=mList[1],
-				dList=sDate.split("-"),
-				tList=sTime.split(
-			var a=dList.length;
-			sInfo=dList[0];
-			for(var i=1;i<a;i++){
-				sInfo+="-"+(dList[i].length>2?dList[i][1]+dList[i][2]:dList[i]);
-			}
-			sInfo+=" "+(tList[0].length>2?tList[0][1]+tList[0][2]:tList[0]);
-			a=tList.length;
-			for(var i=1;i<a;i++){
-				sInfo+=":"+(tList[i].length>2?tList[i][1]+tList[i][2]:tList[i]);
-			}
-		}
-		*/
+
 		return sInfo;
 	},
 	getNewUrl: function(urlObj, sUrl) {

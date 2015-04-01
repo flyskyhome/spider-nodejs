@@ -17,25 +17,25 @@
             this.dataStore.ajaxUrl = location.protocol + "//" + location.host + "/config";
             this.initEvent();
         },
-        initSocket:function(){
-            var that=this;
+        initSocket: function() {
+            var that = this;
             this.socket = io.connect('/');
             this.socket.on('message', function(data) {
                 data = JSON.parse(data);
                 $('#messages').append('<div class="' + data.type + '">' + data.message +
                     '</div>');
             });
-            this.socket.on('grap',function(res){
-                switch(res.type){
+            this.socket.on('grap', function(res) {
+                switch (res.type) {
                     case "msg":
-                        $('#messages').append('<div class="' + res.type + '">' + res.message +'</div>');
+                        $('#messages').append('<div class="' + res.type + '">' + res.message + '</div>');
                         break;
                     case "res":
-                        var list_errList=res.infoObj.list_errList,
-                            iCount=list_errList.length,
-                            sHtml="";
-                        for(var i=0;i<iCount;i++){
-                            sHtml+="<tr><td>"+list_errList[i].type+"</td><td>"+list_errList[i].url+"</td><td>"+list_errList[i].reseaon+"</td></tr>";
+                        var list_errList = res.infoObj.list_errList,
+                            iCount = list_errList.length,
+                            sHtml = "";
+                        for (var i = 0; i < iCount; i++) {
+                            sHtml += "<tr><td>" + list_errList[i].type + "</td><td>" + list_errList[i].url + "</td><td>" + list_errList[i].reseaon + "</td></tr>";
                         }
                         $("#tbGrapResult tbody").html(sHtml);
                         break;
@@ -65,7 +65,7 @@
                     },
                     onClick: function(event, treeId, treeNode, clickFlag) {
                         var sSite = treeNode.site;
-                        var gridObj=that.dataStore.gridObj;
+                        var gridObj = that.dataStore.gridObj;
                         //如果存在站点信息，则获取该站点下相关配置的网址信息
                         if (sSite) {
                             var param = {
@@ -75,8 +75,8 @@
                             that.SendAjaxReq4Json(sUrl, param, function(dataInfo) {
                                 if (dataInfo.state == "ok") {
                                     gridObj.datagrid('loadData', {
-                                        total:dataInfo.objList.length,
-                                        rows:dataInfo.objList
+                                        total: dataInfo.objList.length,
+                                        rows: dataInfo.objList
                                     });
                                 } else {
                                     alert(dataInfo.msg);
@@ -86,7 +86,7 @@
                             });
                         }
                         //如果非站点节点点击，则清空右边的网址信息
-                        else{
+                        else {
                             gridObj.datagrid('loadData', []);
                         }
                     }
@@ -113,19 +113,19 @@
                 var s = msgInfo;
             }
         },
-        initEvent:function(){
-            var that=this;
-            $(".grap").live("click",function(e){
-                var urlList=[],
-                    dom=$(e.target),
-                    sUrl=dom.attr("_id"),
-                    sSrc=dom.attr("src"),
-                    sRemark=dom.attr("remark");
+        initEvent: function() {
+            var that = this;
+            $(".grap").live("click", function(e) {
+                var urlList = [],
+                    dom = $(e.target),
+                    sUrl = dom.attr("_id"),
+                    sSrc = dom.attr("src"),
+                    sRemark = dom.attr("remark");
 
-                var urlObj={
-                    url:sUrl,
-                    src:sSrc,
-                    remark:sRemark
+                var urlObj = {
+                    url: sUrl,
+                    src: sSrc,
+                    remark: sRemark
                 };
                 urlList.push(urlObj);
                 that.grap(urlList);
@@ -326,20 +326,19 @@
                 width: 200,
                 //align: 'center',
                 editor: 'text',
-                formatter: function(value,row,index){
-                    var sResult="";
-                    if (row._id){
-                        sResult="<a href='#' class='grap' _id='"+row._id+"' src='"+row.src+"' remark='"+row.remark+"'>采集</a>";
+                formatter: function(value, row, index) {
+                    var sResult = "";
+                    if (row._id) {
+                        sResult = "<a href='#' class='grap' _id='" + row._id + "' src='" + row.src + "' remark='" + row.remark + "'>采集</a>";
                         return sResult;
                     } else {
                         return value;
                     }
                 }
-            },{
-                field:'site',
-                hidden:1
-            }
-            ];
+            }, {
+                field: 'site',
+                hidden: 1
+            }];
 
             var toolbarList = [{
                 text: '新增',
@@ -357,20 +356,6 @@
                         alert("请选择分类！");
                     }
                     return;
-                    /*
-                    var gridObj = that.dataStore.gridObj;
-
-                    if (that.endEditing()) {
-                        gridObj.datagrid('appendRow', {
-                            _id: "",
-                            src: "",
-                            remark: ""
-                        });
-
-                        that.dataStore.editIndex = gridObj.datagrid('getRows').length - 1;
-                        gridObj.datagrid('selectRow', that.dataStore.editIndex).datagrid('beginEdit', that.dataStore.editIndex);
-                    }
-                    */
                 }
             }, {
                 text: '修改',
@@ -385,31 +370,32 @@
                 disabled: false,
                 handler: function() {
                     var gridObj = that.dataStore.gridObj,
-                        sUrl=that.dataStore.ajaxUrl,
+                        sUrl = that.dataStore.ajaxUrl,
                         checkedList = gridObj.datagrid('getChecked'),
                         iCount = checkedList.length,
-                        objList=[];
+                        objList = [];
 
-                    for(var i=0;i<iCount;i++){
-                        objList.push({_id:checkedList[i]._id});
+                    for (var i = 0; i < iCount; i++) {
+                        objList.push({
+                            _id: checkedList[i]._id
+                        });
                     }
 
-                    var param={
-                        type:"removeSite",
-                        objList:checkedList
+                    var param = {
+                        type: "removeSite",
+                        objList: checkedList
                     };
 
-                    that.SendAjaxReq4Json(sUrl, param, function(dataInfo){
-                        if(dataInfo.state=="ok"){
-                            for(var i=iCount-1;i>=0;i--){
-                                var index=gridObj.datagrid('getRowIndex',checkedList[i]);
-                                gridObj.datagrid('deleteRow',index);
+                    that.SendAjaxReq4Json(sUrl, param, function(dataInfo) {
+                        if (dataInfo.state == "ok") {
+                            for (var i = iCount - 1; i >= 0; i--) {
+                                var index = gridObj.datagrid('getRowIndex', checkedList[i]);
+                                gridObj.datagrid('deleteRow', index);
                             }
-                        }
-                        else{
+                        } else {
                             alert(dataInfo.msge);
                         }
-                    }, function(msgInfo){
+                    }, function(msgInfo) {
 
                     });
                 }
@@ -429,19 +415,8 @@
                 singleSelect: true,
                 toolbar: toolbarList,
                 onClickRow: function(index) {
-                    /*
-                    if (that.dataStore.editIndex != index) {
-                        if (that.endEditing()) {
-                            var gridObj = that.dataStore.gridObj;
-                            gridObj.datagrid('selectRow', index).datagrid('beginEdit', index);
-                            that.dataStore.editIndex = index;
-                        } else {
-                            gridObj.datagrid('selectRow', that.dataStore.editIndex);
-                        }
-                    }
-                    */
                 },
-                onDblClickRow:function(index,row){
+                onDblClickRow: function(index, row) {
                     that.showEditWin('mod');
                 }
             });
@@ -468,50 +443,49 @@
                 sSite = siteUrl ? siteUrl : "",
                 sRemark = "",
                 sContent = "",
-                sDisabled="";
+                sDisabled = "";
 
             if (operType == "add") {
                 sTypeName = "新增配置信息";
-                sRemark="<select style='width:300px' id='selRemark'><option value='宏观'>宏观</option><option value='行业'>行业</option><option value='证券' selected>证券</option></select>";
+                sRemark = "<select style='width:300px' id='selRemark'><option value='宏观'>宏观</option><option value='行业'>行业</option><option value='证券' selected>证券</option></select>";
             } else {
-                sTypeName="修改配置信息";
-                sDisabled="disabled='disabled'";
+                sTypeName = "修改配置信息";
+                sDisabled = "disabled='disabled'";
                 var gridObj = this.dataStore.gridObj;
                 var selectedRow = gridObj.datagrid('getSelected');
-                if(selectedRow){
-                    sSite=selectedRow.site;
-                    sSrc="value='"+selectedRow.src+"'";
-                    sHref="value='"+selectedRow._id+"'";
-                    sRemark="<select style='width:300px' id='selRemark'><option value='宏观'>宏观</option><option value='行业'>行业</option><option value='证券'>证券</option></select>";
-                    var sTmpReg="/^(.*?)('"+selectedRow.remark+"')(.*)$/";
-                    sRemark=sRemark.replace(eval(sTmpReg),"$1$2 selected $3");
-                }
-                else{
+                if (selectedRow) {
+                    sSite = selectedRow.site;
+                    sSrc = "value='" + selectedRow.src + "'";
+                    sHref = "value='" + selectedRow._id + "'";
+                    sRemark = "<select style='width:300px' id='selRemark'><option value='宏观'>宏观</option><option value='行业'>行业</option><option value='证券'>证券</option></select>";
+                    var sTmpReg = "/^(.*?)('" + selectedRow.remark + "')(.*)$/";
+                    sRemark = sRemark.replace(eval(sTmpReg), "$1$2 selected $3");
+                } else {
                     alert("请选择需要修改的对象");
                     return;
                 }
             }
             sContent = "<div style='margin:5px'><span style='margin-right:15px'>频道:</span><input style='width:300px' type='text' id='inpSrc' " + sSrc + "></div>" +
-                "<div style='margin:5px'><span style='margin-right:15px'>网址:</span><input "+sDisabled+" style='width:300px' type='text' id='inpHref' " + sHref + "></div>" +
-                "<div style='margin:5px'><span style='margin-right: 15px;'>属性:</span>"+sRemark+"</div>";
+                "<div style='margin:5px'><span style='margin-right:15px'>网址:</span><input " + sDisabled + " style='width:300px' type='text' id='inpHref' " + sHref + "></div>" +
+                "<div style='margin:5px'><span style='margin-right: 15px;'>属性:</span>" + sRemark + "</div>";
 
             $.dialog({
                 title: sTypeName,
                 content: sContent,
                 ok: function() {
-                    var nodeList=that.dataStore.treeObj.getSelectedNodes(),
+                    var nodeList = that.dataStore.treeObj.getSelectedNodes(),
                         sSrc = $("#inpSrc").val(),
                         sHref = $("#inpHref").val(),
                         sRemark = $("#selRemark").val(),
                         param = {},
-                        sSiteName="";
+                        sSiteName = "";
                     //判断添加的网址是否是属于这个网站的，是允许添加，不是不允许添加
                     if (sHref.indexOf(sSite) >= 0) {
                         var sUrl = location.protocol + "//" + location.host + "/config";
                         //判断是否都填全了
                         if (sSrc && sHref && sRemark) {
-                            if(nodeList.length>0){
-                                sSiteName=nodeList[0].name;
+                            if (nodeList.length > 0) {
+                                sSiteName = nodeList[0].name;
                             }
                             param = {
                                 type: "saveSite",
@@ -520,7 +494,7 @@
                                     src: sSrc,
                                     remark: sRemark,
                                     site: sSite,
-                                    siteName:sSiteName
+                                    siteName: sSiteName
                                 }
                             };
                             //发送请求到服务器端，进行数据库操作
@@ -554,7 +528,7 @@
                         gridObj.datagrid('appendRow', dataInfo.objInfo);
                     } else if (operType == "mod") {
                         var selectedRow = gridObj.datagrid('getSelected');
-                        var index=gridObj.datagrid('getRowIndex',selectedRow);
+                        var index = gridObj.datagrid('getRowIndex', selectedRow);
                         gridObj.datagrid('updateRow', {
                             index: index,
                             row: dataInfo.objInfo
@@ -569,26 +543,12 @@
                 var s = msgInfo;
             }
         },
-        grap:function(urlList){
-            /*
-            var sUrl=location.protocol+"//"+location.host+"/grap",
-                param={
-                    urlList:urlList
-                };
+        grap: function(urlList) {
+            var param = {
+                urlList: urlList
+            };
 
-            this.SendAjaxReq4Json(sUrl,param,sucFunc,errFunc,"post");
-            function sucFunc(dataInfo){
-                alert("抓取已经开始!");
-            }
-            function errFunc(msgInfo){
-                var s=msgInfo;
-            }
-            */
-            var param={
-                    urlList:urlList
-                };
-                
-            this.socket.emit('grap',param);
+            this.socket.emit('grap', param);
         }
     };
 

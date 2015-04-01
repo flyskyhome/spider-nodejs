@@ -11,14 +11,14 @@
      * @return {Boolean}    [description]
      */
     function isArray(o) {
-        return Object.prototype.toString.call(o) === '[object Array]';
-    }
-    /**
-     * 引用接口
-     * @param  {string|Array} sKey    需要引用对象的名称
-     * @param  {string} isMerge 是否合并成一个对象，如果是则回出现同名函数替换情况
-     * @return {object}      对象
-     */
+            return Object.prototype.toString.call(o) === '[object Array]';
+        }
+        /**
+         * 引用接口
+         * @param  {string|Array} sKey    需要引用对象的名称
+         * @param  {string} isMerge 是否合并成一个对象，如果是则回出现同名函数替换情况
+         * @return {object}      对象
+         */
     win.imp = function(keyObj, isMerge) {
         isMerge = !isMerge ? true : isMerge;
         //如果是字符串
@@ -77,8 +77,8 @@
          * @param  {[type]} max [description]
          * @return {[type]}     [description]
          */
-        random:function(min,max){
-            return Math.floor(min+Math.random()*(max-min));
+        random: function(min, max) {
+            return Math.floor(min + Math.random() * (max - min));
         },
         /**
          * 获取请求参数
@@ -388,10 +388,9 @@
          * @return {string}       日期字符串
          */
         formatDate2String: function(dateObj, sSign) {
-            if(dateObj==""){
+            if (dateObj == "") {
                 return ""
-            }
-            else{
+            } else {
                 if (!sSign) {
                     sSign = "-";
                 }
@@ -460,45 +459,57 @@
         getMinVal: function(dataList) {
             return Math.min.apply(null, dataList);
         },
-        getBrowerInfo:function (){
-            var isIE=$.browser.msie;
-            var isWebkit=$.browser.webkit;
-            var isSafari=$.browser.safari;
-            var isMozilla=$.browser.mozilla;
-            var isOpera=$.browser.opera;
+        getBrowerInfo: function() {
+            var isIE = $.browser.msie;
+            var isWebkit = $.browser.webkit;
+            var isSafari = $.browser.safari;
+            var isMozilla = $.browser.mozilla;
+            var isOpera = $.browser.opera;
 
-            var sVersion=$.browser.version;
+            var sVersion = $.browser.version;
             //ie
-            if (isIE==true)
-            {
-                return {bName:"ie",ver:sVersion}
+            if (isIE == true) {
+                return {
+                    bName: "ie",
+                    ver: sVersion
+                }
             }
             //firefox
-            else if (isMozilla==true)
-            {
-                return {bName:"ff",ver:sVersion}
+            else if (isMozilla == true) {
+                return {
+                    bName: "ff",
+                    ver: sVersion
+                }
             }
             //google chrome
-            else if (isWebkit==true && isSafari==true)
-            {
-                return {bName:"gc",ver:sVersion}
+            else if (isWebkit == true && isSafari == true) {
+                return {
+                    bName: "gc",
+                    ver: sVersion
+                }
             }
             //opera
-            else if (isOpera==true)
-            {
-                return {bName:"op",ver:sVersion}
+            else if (isOpera == true) {
+                return {
+                    bName: "op",
+                    ver: sVersion
+                }
             }
             //苹果 safari
-            else if (isSafari==true)
-            {
-                return {bName:"sf",ver:sVersion}
-            }
-            else{
-                return {bName:"",ver:""}
+            else if (isSafari == true) {
+                return {
+                    bName: "sf",
+                    ver: sVersion
+                }
+            } else {
+                return {
+                    bName: "",
+                    ver: ""
+                }
             }
         },
-        setPageTitle:function(sTitle){
-            document.title=sTitle;
+        setPageTitle: function(sTitle) {
+            document.title = sTitle;
         },
         /**
          * 按拼音排序
@@ -507,35 +518,32 @@
          * @param  {string} direction 排序方向
          * @return {Array}           排序后的对象列表
          */
-        sort4Py:function(objList,sSortKey,direction){
+        sort4Py: function(objList, sSortKey, direction) {
             //中文拼音排序,忽略英文字符的大小写
-            var s1="",
-                s2="";
-            if(direction=="asc"){
-                objList.sort(function(a,b){
-                    if(sSortKey){
-                        s1=a[sSortKey].toLowerCase();
-                        s2=b[sSortKey].toLowerCase();
+            var s1 = "",
+                s2 = "";
+            if (direction == "asc") {
+                objList.sort(function(a, b) {
+                    if (sSortKey) {
+                        s1 = a[sSortKey].toLowerCase();
+                        s2 = b[sSortKey].toLowerCase();
+                    } else {
+                        s1 = a.toLowerCase();
+                        s2 = b.toLowerCase();
                     }
-                    else{
-                        s1=a.toLowerCase();
-                        s2=b.toLowerCase();
-                    }
-                    return s1.localeCompare(s2);                        
+                    return s1.localeCompare(s2);
                 });
-            }
-            else{
-                objList.sort(function(a,b){
-                    if(sSortKey){
-                        s1=a[sSortKey].toLowerCase();
-                        s2=b[sSortKey].toLowerCase();
+            } else {
+                objList.sort(function(a, b) {
+                    if (sSortKey) {
+                        s1 = a[sSortKey].toLowerCase();
+                        s2 = b[sSortKey].toLowerCase();
+                    } else {
+                        s1 = a.toLowerCase();
+                        s2 = b.toLowerCase();
                     }
-                    else{
-                        s1=a.toLowerCase();
-                        s2=b.toLowerCase();
-                    }                    
-                    return s2.localeCompare(s1);                                                
-                });      
+                    return s2.localeCompare(s1);
+                });
             }
             return objList;
         }
@@ -551,39 +559,38 @@
  */
 (function($) {
     var dataTools = {
-            SendAjaxReq4Json: function(sSendUrl, paramObj, sucessFunc, errorFunc, sType, isAsync, isCache) {
-                if (sType != "get" && sType != "post") {
-                    sType = "get";
-                }
-                if (isCache) {
-                    isCache = true;
-                }
-                else{
-                    isCache = false;
-                }
-                if (isAsync != false) {
-                    isAsync = true;
-                }
-                $.ajax({
-                    type: sType,
-                    url: sSendUrl,
-                    dataType: "json",
-                    cache: isCache,
-                    ifModified: false,
-                    async: isAsync,
-                    data: paramObj,
-                    beforeSend: function() {},
-                    success: function(msg) {
-                        sucessFunc(msg);
-                        msg = null;
-                    },
-                    error: function(errorMsg) {
-                        errorFunc(errorMsg);
-                        errorMsg = null;
-                    }
-                });
-                paramObj = null;
+        SendAjaxReq4Json: function(sSendUrl, paramObj, sucessFunc, errorFunc, sType, isAsync, isCache) {
+            if (sType != "get" && sType != "post") {
+                sType = "get";
             }
+            if (isCache) {
+                isCache = true;
+            } else {
+                isCache = false;
+            }
+            if (isAsync != false) {
+                isAsync = true;
+            }
+            $.ajax({
+                type: sType,
+                url: sSendUrl,
+                dataType: "json",
+                cache: isCache,
+                ifModified: false,
+                async: isAsync,
+                data: paramObj,
+                beforeSend: function() {},
+                success: function(msg) {
+                    sucessFunc(msg);
+                    msg = null;
+                },
+                error: function(errorMsg) {
+                    errorFunc(errorMsg);
+                    errorMsg = null;
+                }
+            });
+            paramObj = null;
+        }
     };
 
     exp.dataTools = dataTools;
@@ -594,41 +601,40 @@
  * @param  {[type]} Ext [description]
  * @return {[type]}     [description]
  */
-(function($){
+(function($) {
     var ztreeHelper = {
-        initTree:function(sTreeId,setting,objList){
-            $.fn.zTree.init($("#"+sTreeId), setting, objList);
+        initTree: function(sTreeId, setting, objList) {
+            $.fn.zTree.init($("#" + sTreeId), setting, objList);
         },
         //析构树对象
-        destoryTree:function(sTreeId){
-            if(sTreeId){
+        destoryTree: function(sTreeId) {
+            if (sTreeId) {
                 $.fn.zTree.destroy(sTreeId);
-            }
-            else{
+            } else {
                 $.fn.zTree.destroy();
             }
             return this;
         },
-        getTreeObj:function(sTreeId){
+        getTreeObj: function(sTreeId) {
             return $.fn.zTree.getZTreeObj(sTreeId);
         }
     };
 
-    exp.ztreeHelper=ztreeHelper;
+    exp.ztreeHelper = ztreeHelper;
 })(jQuery);
 
-(function(win,$){
+(function(win, $) {
     //如果浏览器是ie的，目前发现ie11 会被判断成 ff 则重写open方法，其它浏览器如碰到问题再具体分析
-    if(exp.genTools.getBrowerInfo().bName=="ie" || exp.genTools.getBrowerInfo().bName=="ff"){
+    if (exp.genTools.getBrowerInfo().bName == "ie" || exp.genTools.getBrowerInfo().bName == "ff") {
 
-        var myOpen=myOpen || win.open,
-            sWidth="width="+screen.availWidth,
-            sHeight="height="+screen.availHeight;
-        win.open=function(sURL,sName,sFeatures,bReplace){
-            sName=sName||"_blank";
-            sFeatures=sFeatures||"fullscreen=0,directories=0,location=0,menubar=0,toolbar=0,resizable=1,status=1,top=0,left=0,"+sWidth+","+sHeight;
-            bReplace=bReplace||false;
-            myOpen(sURL,sName,sFeatures,bReplace);
+        var myOpen = myOpen || win.open,
+            sWidth = "width=" + screen.availWidth,
+            sHeight = "height=" + screen.availHeight;
+        win.open = function(sURL, sName, sFeatures, bReplace) {
+            sName = sName || "_blank";
+            sFeatures = sFeatures || "fullscreen=0,directories=0,location=0,menubar=0,toolbar=0,resizable=1,status=1,top=0,left=0," + sWidth + "," + sHeight;
+            bReplace = bReplace || false;
+            myOpen(sURL, sName, sFeatures, bReplace);
         }
     }
-})(window,jQuery);
+})(window, jQuery);

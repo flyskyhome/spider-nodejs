@@ -503,23 +503,37 @@
         /**
          * 按拼音排序
          * @param  {Array}  objList   对象列表
-         * @param  {string} sSortKey  排序关键之
+         * @param  {string} sSortKey  排序关键字,若为空,则认为ObjList为字符串列表
          * @param  {string} direction 排序方向
          * @return {Array}           排序后的对象列表
          */
         sort4Py:function(objList,sSortKey,direction){
             //中文拼音排序,忽略英文字符的大小写
+            var s1="",
+                s2="";
             if(direction=="asc"){
                 objList.sort(function(a,b){
-                    var s1=a[sSortKey].toLowerCase();
-                    var s2=b[sSortKey].toLowerCase();
+                    if(sSortKey){
+                        s1=a[sSortKey].toLowerCase();
+                        s2=b[sSortKey].toLowerCase();
+                    }
+                    else{
+                        s1=a.toLowerCase();
+                        s2=b.toLowerCase();
+                    }
                     return s1.localeCompare(s2);                        
                 });
             }
             else{
                 objList.sort(function(a,b){
-                    var s1=a[sSortKey].toLowerCase();
-                    var s2=b[sSortKey].toLowerCase();
+                    if(sSortKey){
+                        s1=a[sSortKey].toLowerCase();
+                        s2=b[sSortKey].toLowerCase();
+                    }
+                    else{
+                        s1=a.toLowerCase();
+                        s2=b.toLowerCase();
+                    }                    
                     return s2.localeCompare(s1);                                                
                 });      
             }

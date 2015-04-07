@@ -42,9 +42,9 @@ var searchService = {
 			iCount = titleList.length;
 			if (iCount > 0) {
 				for (var i = 0; i < iCount; i++) {
-					sCont4Title += "_id:" + "/^.*" + titleList[i] + ".*$/i,";
+					sCont4Title += "{_id:" + "/^.*" + titleList[i] + ".*$/i},";
 				}
-				sCont4Title = sCont4Title.substr(0, sCont4Title.length - 1);
+				sCont4Title = "'$or':["+sCont4Title.substr(0, sCont4Title.length - 1)+"]";
 			}
 			sCont += sCont4Title;
 		}

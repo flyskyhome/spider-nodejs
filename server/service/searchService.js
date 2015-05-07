@@ -38,13 +38,24 @@ var searchService = {
 		}
 
 		if (sTitle) {
-			titleList = sTitle.split(",");
+			if(sTitle.indexOf(";")>=0){
+				titleList = sTitle.split(";");
+			}
+			else{
+				titleList = sTitle.split(",");
+			}
 			iCount = titleList.length;
 			if (iCount > 0) {
 				for (var i = 0; i < iCount; i++) {
 					sCont4Title += "{_id:" + "/^.*" + titleList[i] + ".*$/i},";
 				}
-				sCont4Title = "'$or':["+sCont4Title.substr(0, sCont4Title.length - 1)+"]";
+
+				if(sTitle.indexOf(";")>=0){
+					sCont4Title = "'$and':["+sCont4Title.substr(0, sCont4Title.length - 1)+"]";
+				}
+				else{
+					sCont4Title = "'$or':["+sCont4Title.substr(0, sCont4Title.length - 1)+"]";
+				}
 			}
 			sCont += sCont4Title;
 		}
